@@ -29,6 +29,9 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - DJANGO_CONFIGURATION=Dev
+      - DJANGO_SETTINGS_MODULE=barter.settings
+      - DJANGO_SECRET_KEY=mySuperKey
     depends_on:
       - db
 
