@@ -3,28 +3,28 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Link,
   Button
 } from "@nextui-org/react";
 import { ThemeSwitch } from "./ThemeSwitch";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   return (
-    <NavBarNUI shouldHideOnScroll>
-      <NavbarBrand>
-        <p className="font-bold text-inherit">LOGO</p>
-      </NavbarBrand>
+    <NavBarNUI shouldHideOnScroll maxWidth="full">
       <NavbarContent justify="end" className="gap-1 md:gap-3">
+        <NavbarBrand>
+          <Link to='/' className="font-bold text-inherit">LOGO</Link>
+        </NavbarBrand>
         <NavbarItem>
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="bordered" className="hidden md:flex">
+          <Button as={Link} color="primary" to="register" variant="ghost" className="hidden md:flex">
             Registrarse
           </Button>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="shadow">
+          <Button as={Link} color="primary" to="login" variant="shadow">
             Ingresar
           </Button>
         </NavbarItem>
