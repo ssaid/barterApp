@@ -1,9 +1,9 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider} from "@nextui-org/react";
 import { UserBase } from '../../../types/user';
 import { useState } from 'react';
-import { AiFillEye, AiFillEyeInvisible, AiFillGoogleCircle } from 'react-icons/ai';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc'
 
 const initialValues: UserBase = {
