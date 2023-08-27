@@ -2,4 +2,4 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the barter project, trade index v:3.0.")
+    return HttpResponse("Hello, world. You're at the barter project, trade index v:4.0.")

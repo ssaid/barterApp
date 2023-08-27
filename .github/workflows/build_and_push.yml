@@ -52,4 +52,4 @@ jobs:
         run: |
           curl -X POST -k https://argocd.milleros.com.ar/api/v1/applications/barter-prd/sync \
             -H "Authorization: Bearer ${{ secrets.ARGOCD_API_TOKEN }}" \
-            -H "Content-Type: application/json" -d '{"syncOptions":{"items":["CreateNamespace=true","Replace=true"]}}'
+            -H "Content-Type: application/json" -d '{"dryRun":false,"prune":false,"revision":"HEAD","strategy":{"hook":{"force":true}},"syncOptions":{"items":["Replace=true"]},"resources":[{"group":"apps","version":"v1","kind":"Deployment","namespace":"barter-prd","name":"client","status":"Synced"},{"group":"apps","version":"v1","kind":"Deployment","namespace":"barter-prd","name":"server","status":"Synced"}]}'
