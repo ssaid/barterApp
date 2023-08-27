@@ -54,7 +54,14 @@ class Dev(Configuration):
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
 
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    STORAGE = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
     ROOT_URLCONF = 'barter.urls'
 
