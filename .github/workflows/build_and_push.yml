@@ -48,7 +48,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ github.repository }}/server:${{ github.sha }}
             ${{ env.REGISTRY }}/${{ github.repository }}/server:${{ vars.SUFFIX_IMAGE }}
-    - name: Trigger ArgoCD Sync
-      run: |
-        curl -X POST -k https://argocd.milleros.com.ar/api/v1/applications/barter-prd/sync \
-          -H "Authorization: Bearer ${{ secrets.ARGOCD_API_TOKEN }}"
+      - name: Trigger ArgoCD Sync
+        run: |
+          curl -X POST -k https://argocd.milleros.com.ar/api/v1/applications/barter-prd/sync \
+            -H "Authorization: Bearer ${{ secrets.ARGOCD_API_TOKEN }}"
