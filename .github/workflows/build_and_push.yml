@@ -51,4 +51,5 @@ jobs:
       - name: Trigger ArgoCD Sync
         run: |
           curl -X POST -k https://argocd.milleros.com.ar/api/v1/applications/barter-prd/sync \
-            -H "Authorization: Bearer ${{ secrets.ARGOCD_API_TOKEN }}"
+            -H "Authorization: Bearer ${{ secrets.ARGOCD_API_TOKEN }}" \
+            -H "Content-Type: application/json" -d '{"syncOptions":{"items":["CreateNamespace=true","Replace=true"]}}'
