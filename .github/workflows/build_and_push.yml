@@ -27,18 +27,18 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      # -
-      #   name: Build and push
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: ./client
-      #     build-args: |
-      #       "VITE_API_BASE_URL=${{ vars.VITE_MILLEROS_BASE_URL }}"
-      #       "VITE_GOOGLE_ANALYTICS_ID=${{ vars.VITE_GOOGLE_ANALYTICS_ID }}"
-      #     push: true
-      #     tags: |
-      #       ${{ env.REGISTRY }}/${{ github.repository }}/client:${{ github.sha }}
-      #       ${{ env.REGISTRY }}/${{ github.repository }}/client:${{ vars.SUFFIX_IMAGE }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: ./client
+          build-args: |
+            "VITE_API_BASE_URL=${{ vars.VITE_MILLEROS_BASE_URL }}"
+            "VITE_GOOGLE_ANALYTICS_ID=${{ vars.VITE_GOOGLE_ANALYTICS_ID }}"
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ github.repository }}/client:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ github.repository }}/client:${{ vars.SUFFIX_IMAGE }}
       -
         name: Build and push
         uses: docker/build-push-action@v4
