@@ -1,24 +1,23 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider} from "@nextui-org/react";
-import { UserCreate } from '../../../types/user';
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, LinkNUI} from "@nextui-org/react";
+import { UserBase } from '../../../types/user';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc'
+import { Link } from 'react-router-dom';
 
-const initialValues: UserCreate = {
-  name: '',
+const initialValues: UserBase = {
   email: '',
   password: '',
 }
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Campo requerido'),
   email: Yup.string().email('Email invalido').required('Campo requerido'),
   password: Yup.string().required('Campo requerido'),
 })
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
 
   const [ pswVisible, setPswVisible ] = useState(false)
 
@@ -26,13 +25,13 @@ export const RegisterForm = () => {
     setPswVisible(visible => !visible)
   }
 
-  const handleSubmit = (values: UserCreate) => {
+  const handleSubmit = (values: UserBase) => {
     console.log(values)
   }
 
   return (
     <Card className="max-w-lg w-full py-5">
-      <CardHeader className='ml-3 justify-center text-lg'>Crea una cuenta</CardHeader>
+      <CardHeader className='ml-3 justify-center text-lg'>Ingresa</CardHeader>
       <Button variant="ghost" className='mx-5 mb-5'>
        <FcGoogle /> Continuar con Google
       </Button>
@@ -49,16 +48,6 @@ export const RegisterForm = () => {
           formik =>
             <Form>
               <CardBody className='flex flex-col gap-3'>
-                <Field 
-                  as={Input}
-                  variant="bordered"
-                  name="name" 
-                  type="name" 
-                  color={formik.touched.name && formik.errors.name ? "danger" : ""}
-                  placeholder="Nombre" 
-                  validationState={formik.touched.name && formik.errors.name ? "error" : ""}
-                  errorMessage={formik.touched.name && formik.errors.name && formik.errors.name}
-                />
                 <Field 
                   as={Input}
                   variant="bordered"
@@ -89,10 +78,14 @@ export const RegisterForm = () => {
                   type={pswVisible ? "text" : "password"}
                 />
               </CardBody>
-              <CardFooter className="justify-end" >
-                <Button variant="solid" color="primary" type="submit">
-                  Registrarse
-                </Button>
+              <CardFooter className="flex flex-col" >
+                <div className='text-end w-full px-3'>
+                  <Button variant="solid" color="primary" type="submit">
+                    Ingresar
+                  </Button>
+                </div>
+                <Divider className='my-5' />
+              <p>Todavia no tenes cuenta? <Link to='/register' className='text-primary'>Registrate</Link></p>
               </CardFooter>
             </Form>
         }

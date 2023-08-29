@@ -1,12 +1,12 @@
-
+import { LoginForm } from "../features/login/components/LoginForm"
 
 
 export const Login = () => {
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      Login
-    </div>
+    <main className="flex items-center justify-center h-[calc(100vh-64px)] p-3">
+      <LoginForm />
+    </main>
 
   )
 }

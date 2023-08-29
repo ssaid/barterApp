@@ -1,7 +1,5 @@
 import { RegisterForm } from "../features/regiter/components/RegisterForm"
 
-
-
 export const Register = () => {
 
   return (

@@ -1,9 +1,12 @@
 
 
 export type UserBase = {
-  name: string,
   email: string,
   password: string,
+}
+
+export type UserCreate = UserBase & {
+  name: string,
 }
 
 export type User = UserBase & {
