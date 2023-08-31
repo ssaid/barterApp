@@ -6,6 +6,7 @@ import {
   Login,
   Register,
 } from '../pages'
+import { BasicInformation } from "../pages/BasicInformation";
 
 
 export const router = createBrowserRouter([
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+      { path: "/welcome", element: <BasicInformation /> },
     ],
     // errorElement: <ErrorView />,
   },

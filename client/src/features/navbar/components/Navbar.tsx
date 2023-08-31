@@ -24,7 +24,7 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         {
-          !(location.pathname === '/register') &&
+          (location.pathname === '/') &&
             <NavbarItem>
               <Button as={Link} color="primary" to="register" variant="ghost" className="hidden md:flex">
                 Registrarse
