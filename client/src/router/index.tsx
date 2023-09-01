@@ -7,6 +7,7 @@ import {
   Register,
 } from '../pages'
 import { BasicInformation } from "../pages/BasicInformation";
+import { CreatePost } from "../pages/CreatePost";
 
 
 export const router = createBrowserRouter([
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/welcome", element: <BasicInformation /> },
+      { path: "/create_post", element: <CreatePost /> },
     ],
     // errorElement: <ErrorView />,
   },
