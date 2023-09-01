@@ -1,5 +1,4 @@
 
-import React, { useState } from 'react';
 import { AiFillCamera } from 'react-icons/ai';
 
 type CameraCaptureProps = {

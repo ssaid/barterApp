@@ -1,15 +1,14 @@
-import {Button, Card, CardBody, CardFooter, Image, Skeleton} from "@nextui-org/react";
+import { Card, CardFooter, Image } from "@nextui-org/react";
 import { Category } from "../../../types/category";
 
 
 
 type Props = {
   category: Category
-  isLoading?: boolean
 }
 
 
-export const CategoryCard = ({ category, isLoading }: Props) => {
+export const CategoryCard = ({ category }: Props) => {
 
   return (
     <Card

@@ -1,6 +1,6 @@
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Image, Badge, Textarea, Chip} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip} from "@nextui-org/react";
 import { Post, Category } from '../../../types/post';
 import { DragAndDropFiles } from '../../../components/DragAndDropFiles';
 import CameraCapture from '../../../components/CameraCapture';
@@ -27,10 +27,6 @@ const validationSchema = Yup.object({
 })
 
 export const CreatePostForm = () => {
-
-  const handleSubmit = (values: Post) => {
-    console.log(values)
-  }
 
   const categories: Category[] = [
     { id: 1, name: 'Arte' },

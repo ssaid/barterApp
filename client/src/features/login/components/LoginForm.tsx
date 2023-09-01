@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, LinkNUI} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider } from "@nextui-org/react";
 import { UserBase } from '../../../types/user';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';

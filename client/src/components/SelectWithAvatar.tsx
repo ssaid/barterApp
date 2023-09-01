@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import {Select, SelectItem, Avatar, Input, Popover} from "@nextui-org/react";
+import {Select, SelectItem } from "@nextui-org/react";
 
 type Items = {
   value: string

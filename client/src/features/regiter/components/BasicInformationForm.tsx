@@ -21,6 +21,7 @@ const enum MethodLabels{
   'facebook'= 'Perfil',
 }
 
+
 const validationSchema = Yup.object({
   country: Yup.string().required('Este campo es requerido'),
   state: Yup.string().required('Este campo es requerido'),
@@ -48,11 +49,6 @@ export const BasicInformationForm = () => {
     { value: 'CH', label: 'Chaco' },
   ]
 
-  const cities = [
-    { value: 'BA', label: 'Buenos Aires' },
-    { value: 'CA', label: 'Catamarca' },
-    { value: 'CH', label: 'Chaco' },
-  ]
 
   const methods = [
     {
@@ -163,9 +159,9 @@ export const BasicInformationForm = () => {
                                 className='w-3/5'
                                 label="Metodo"
                                 variant="bordered"
-                                color={formik.touched.contact_methods?.at(index)?.method && formik.errors.contact_methods?.at(index)?.method ? "danger" : ""}
-                                errorMessage={formik.touched.contact_methods?.at(index)?.method && formik.errors.contact_methods?.at(index)?.method && formik.errors.contact_methods?.at(index)?.method}
-                                validationState={formik.touched.contact_methods?.at(index)?.method && formik.errors.contact_methods?.at(index)?.method}
+                                color={formik.touched.contact_methods?.[index]?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method ? "danger" : ""}
+                                errorMessage={formik.touched.contact_methods?.[index]?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method}
+                                validationState={formik.touched.contact_methods?.[index]?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method}
                                 classNames={{
                                   popover: 'min-w-max'
                                 }}
@@ -200,10 +196,11 @@ export const BasicInformationForm = () => {
                                 name={`contact_methods.${index}.value`}
                                 as={Input}
                                 variant="bordered"
+                                //@ts-ignore
                                 label={MethodLabels[formik.values.contact_methods[index].method] ?? 'Contacto'}
-                                color={formik.touched.contact_methods?.at(index)?.value && formik.errors.contact_methods?.at(index)?.value ? "danger" : ""}
-                                errorMessage={formik.touched.contact_methods?.at(index)?.value && formik.errors.contact_methods?.at(index)?.value && formik.errors.contact_methods?.at(index)?.value}
-                                validationState={formik.touched.contact_methods?.at(index)?.value && formik.errors.contact_methods?.at(index)?.value}
+                                color={formik.touched.contact_methods?.[index]?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value ? "danger" : ""}
+                                errorMessage={formik.touched.contact_methods?.[index]?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value}
+                                validationState={formik.touched.contact_methods?.[index]?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value}
                               />
                               <Button 
                                 isIconOnly 
