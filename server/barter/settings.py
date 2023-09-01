@@ -37,14 +37,18 @@ class Dev(Configuration):
 # Application definition
 
     INSTALLED_APPS = [
-        'rest_framework',
-        'drf_yasg',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django.contrib.gis',
+        'cities',
+        'rest_framework',
+        'rest_framework_gis',
+        'drf_yasg',
+        'trade',
     ]
 
     MIDDLEWARE = [
@@ -89,11 +93,11 @@ class Dev(Configuration):
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql'),
+            'ENGINE': os.environ.get('SQL_ENGINE', 'django.contrib.gis.db.backends.postgis'),
             'NAME': os.environ.get('POSTGRES_NAME'),
             'USER': os.environ.get('POSTGRES_USER'),
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
@@ -120,6 +124,14 @@ class Dev(Configuration):
             'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
         },
     ]
+
+    REST_FRAMEWORK = {
+        # Use Django's standard `django.contrib.auth` permissions,
+        # or allow read-only access for unauthenticated users.
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ]
+    }
 
 
 # Internationalization

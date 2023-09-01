@@ -1,3 +1,17 @@
+Model
+-----
+
+
 Server
 ------
 Based on: https://github.com/docker/awesome-compose/tree/master/official-documentation-samples/django/
+
+Initialize devEnv
+----
+1. dc build
+2. dc up -d db
+3. dc exec db dropdb postgres -U postgres
+4. dc exec db createdb postgres -U postgres
+5. dc run --rm server python manage.py migrate
+6. dc run --rm server python manage.py createsuperuser
+7. dc run --rm server python manage.py cities --import=country,region,subregion,city
