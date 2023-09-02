@@ -14,7 +14,7 @@ class ContactMethod(models.Model):
 
 
 class UserInformation(models.Model):
-    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.PointField(geography=True, default=Point(0.0, 0.0))
     # https://raphael-leger.medium.com/django-handle-latitude-and-longitude-54a4bb2f6e3b
