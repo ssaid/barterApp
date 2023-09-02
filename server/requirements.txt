@@ -10,3 +10,4 @@ drf-yasg
 django-cities
 Pillow
 djangorestframework-gis
+djangorestframework-simplejwt

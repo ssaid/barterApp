@@ -46,6 +46,7 @@ class Dev(Configuration):
         'django.contrib.gis',
         'cities',
         'rest_framework',
+        'rest_framework_simplejwt',
         'rest_framework_gis',
         'drf_yasg',
         'trade',
@@ -130,6 +131,9 @@ class Dev(Configuration):
         # or allow read-only access for unauthenticated users.
         'DEFAULT_PERMISSION_CLASSES': [
             'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        ],
+        'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
         ]
     }
 

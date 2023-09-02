@@ -19,25 +19,43 @@ from django.urls import include, path
 
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from trade.api.views import UserRegistrationView
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
 
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'is_staff']
-
-# ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
+schema_view = get_schema_view(
+    openapi.Info(
+      title="Trade API",
+      default_version='v1',
+      description="API For trading objects",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="ayuda@permut.ar"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+# router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('trade/api/', include(router.urls)),
+    # path('trade/api/', include(router.urls)),
     path("trade/", include("trade.urls")),
+    path('trade/api/', include('trade.api.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    # JWT
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/users/', UserRegistrationView.as_view(), name='user-registration'),
+    # Swagger
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
