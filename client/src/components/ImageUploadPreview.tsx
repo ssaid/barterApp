@@ -9,8 +9,6 @@ type ImageUploadPreviewProps = {
 
 export const ImageUploadPreview = memo(({ img, onClick }: ImageUploadPreviewProps) => {
 
-  console.log('render')
-
   return ( 
     <Badge 
       content="&times;" 
@@ -28,8 +26,4 @@ export const ImageUploadPreview = memo(({ img, onClick }: ImageUploadPreviewProp
       />
     </Badge>
   )
-}, (prevProps, nextProps) => {
-    console.log({prevProps})
-    console.log({nextProps})
-  return prevProps.img == nextProps.img
-})
+}, (prev, next) => prev.img == next.img)
