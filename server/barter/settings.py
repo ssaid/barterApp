@@ -25,6 +25,7 @@ class Dev(Configuration):
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-(c-1scd%j+t1x9o))z&j_%oe4xdtd)mesz+i%ybw%0ten@%6gs'
     SECRET_KEY = values.SecretValue()
+    print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
@@ -33,6 +34,8 @@ class Dev(Configuration):
     ALLOWED_HOSTS = values.ListValue([], separator=';')
     CSRF_TRUSTED_ORIGINS = values.ListValue([], separator=';')
     CORS_ALLOWED_ORIGINS = values.ListValue([], separator=';')
+    CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+    print(CORS_ALLOWED_ORIGINS)
 
 # Application definition
 
@@ -44,6 +47,8 @@ class Dev(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'django.contrib.gis',
+        # Cors
+        'corsheaders',
         'cities',
         'rest_framework',
         'rest_framework_simplejwt',
@@ -58,6 +63,7 @@ class Dev(Configuration):
     ]
 
     MIDDLEWARE = [
+        'corsheaders.middleware.CorsMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'whitenoise.middleware.WhiteNoiseMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
