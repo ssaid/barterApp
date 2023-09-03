@@ -2,7 +2,7 @@ import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar} from "@nextui-org/react";
 import { UserInformation } from '../../../types/user';
-import { MdAdd, MdDelete } from 'react-icons/md';
+import { MdAdd, MdDelete, MdPlace } from 'react-icons/md';
 
 const initialValues: UserInformation = {
   country: 'AR',
@@ -15,6 +15,7 @@ const initialValues: UserInformation = {
 
 import wp_icon from '../../../assets/whatsapp_icon.png'
 import fb_icon from '../../../assets/facebook_icon.ico'
+import { IconWrapper } from '../../../components/IconWrapper';
 
 const enum MethodLabels{
   'whatsapp'= 'Telefono',
@@ -62,6 +63,10 @@ export const BasicInformationForm = () => {
       icon: fb_icon,
     }
   ]
+
+  const handleLocation = () => {
+    navigator.geolocation.getCurrentPosition(console.log)
+  }
 
 
   return (
@@ -139,6 +144,20 @@ export const BasicInformationForm = () => {
                   color={formik.touched.city && formik.errors.city ? "danger" : ""}
                   validationState={formik.touched.city && formik.errors.city}
                   errorMessage={formik.touched.city && formik.errors.city && formik.errors.city}
+                  description={
+                    <p className='text-end'>Podes obtener tu ubicacion automaticamente</p>
+                  }
+                  de
+                  endContent={
+                    <IconWrapper 
+                      className="bg-default/50 hover:bg-default/80 text-foreground cursor-pointer"
+                    >
+                      <MdPlace 
+                        onClick={handleLocation}
+                        className="text-lg" 
+                      />
+                    </IconWrapper>
+                  }
                 />
 
                 <p>Metodos de contacto</p>

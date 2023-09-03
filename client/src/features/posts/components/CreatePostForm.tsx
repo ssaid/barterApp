@@ -2,8 +2,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip} from "@nextui-org/react";
 import { Post, Category } from '../../../types/post';
-import { DragAndDropFiles } from '../../../components/DragAndDropFiles';
-import { ImageUploadPreview } from '../../../components/ImageUploadPreview';
+import { DragAndDropFiles } from './DragAndDropFiles';
+import { ImageUploadPreview } from './ImageUploadPreview';
 import { useMemo } from 'react';
 
 const initialValues: Post = {

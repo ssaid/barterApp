@@ -17,9 +17,9 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-      { path: "/welcome", element: <BasicInformation /> },
-      { path: "/create_post", element: <CreatePost /> },
+      { path: "user/register", element: <Register /> },
+      { path: "user/edit-profile", element: <BasicInformation /> },
+      { path: "user/new-post", element: <CreatePost /> },
     ],
     // errorElement: <ErrorView />,
   },
