@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { ThemeSwitch } from "./ThemeSwitch";
 import { Link, useLocation } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../../context/auth";
 import { UserOptions } from "./UserOptions";
 import { SearchBar } from "./SearchBar";
@@ -21,12 +21,6 @@ export const Navbar = () => {
   const location = useLocation()
 
   const auth = useContext(AuthContext);
-
-
-  useEffect(() => {
-    auth.handleLogin({username: 'Dan', token: '123'})
-  }, [])
-
 
   return (
     <NavBarNUI shouldHideOnScroll maxWidth="full">

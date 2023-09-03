@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { AuthData } from "../types/auth";
 
 
@@ -11,9 +11,8 @@ export const AuthProvider = ({ children }: any) => {
   const [signed, setSigned] = useState<boolean>(false);
   const [token, setToken] = useState<string>();
 
-  const handleLogin = ({ token, username }) => {
+  const handleLogin = ({ token }) => {
     setToken(token);
-    setUsername(username);
     setSigned(true);
   }
 
@@ -22,6 +21,15 @@ export const AuthProvider = ({ children }: any) => {
     setUsername(null);
     setSigned(false);
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      setToken(token)
+      setSigned(true)
+    }
+
+  }, [])
 
   return (
     <AuthContext.Provider

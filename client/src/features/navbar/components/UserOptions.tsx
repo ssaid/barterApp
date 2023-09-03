@@ -5,6 +5,7 @@ import { AiFillHeart } from "react-icons/ai";
 import { HiPencilSquare } from "react-icons/hi2";
 import { BiBookAdd } from "react-icons/bi";
 import { BsCardList } from "react-icons/bs";
+import { RiAccountCircleFill } from "react-icons/ri";
 
 import { IconWrapper } from "../../../components/IconWrapper"; 
 
@@ -64,6 +65,17 @@ export const UserOptions = () => {
         }
       >
         Editar Perfil
+      </ListboxItem>
+      <ListboxItem
+        key="user/logout"
+        className="text-end"
+        endContent={
+          <IconWrapper className="bg-warning/10 text-warning">
+            <RiAccountCircleFill className="text-lg" />
+          </IconWrapper>
+        }
+      >
+        Cerrar Sesion
       </ListboxItem>
     </Listbox>
   );

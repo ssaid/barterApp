@@ -2,11 +2,13 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider} from "@nextui-org/react";
 import { UserCreate } from '../../../types/user';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc'
-import { useRegister } from '../hooks/useRegister';
+import { useAuth } from '../hooks/useAuth';
 import { parseError } from '../../../utils/parseError';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../context/auth';
 
 const initialValues: UserCreate = {
   username: '',
@@ -25,17 +27,34 @@ export const RegisterForm = () => {
 
   const [ pswVisible, setPswVisible ] = useState(false)
 
-  const { mutation } = useRegister()
+  const navigate = useNavigate()
+  const { handleLogin } = useContext(AuthContext)
+  const { register, login } = useAuth()
 
   const togglePswVisibility = () => {
     setPswVisible(visible => !visible)
   }
 
   const handleSubmit = (values: UserCreate) => {
-    mutation.mutate(values)
+    register.mutate(values)
 
   }
 
+  useEffect(() => {
+    if (register.isSuccess){
+      const { username, ...user } = register.variables
+      login.mutate(user)
+    }
+  }, [register.isSuccess])
+
+  useEffect(() => {
+    if (login.isSuccess){
+      handleLogin({ token: login.data.data.access })
+      localStorage.setItem('token', login.data.data.access)
+      localStorage.setItem('refresh_token', login.data.data.refresh)
+      navigate('/')
+    }
+  }, [login.isSuccess])
 
   return (
     <Card className="max-w-lg w-full py-5">
@@ -97,12 +116,12 @@ export const RegisterForm = () => {
                 />
               </CardBody>
               <CardFooter className="justify-end gap-4" >
-                <Button variant="solid" color="primary" type="submit" isLoading={mutation.isLoading}>
+                <Button variant="solid" color="primary" type="submit" isLoading={register.isLoading || login.isLoading}>
                   Registrarse
                 </Button>
               </CardFooter>
-              <p className={`text-white bg-danger text-center transition duration-500 py-1 -mb-5 mt-2 ${mutation.isError ? '' : 'translate-y-8'} `} >
-                {parseError(mutation.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
+              <p className={`text-white bg-danger text-center transition duration-500 py-1 -mb-5 mt-2 ${register.isError ? '' : 'translate-y-8'} `} >
+                {parseError(register.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
               </p>
             </Form>
         }
