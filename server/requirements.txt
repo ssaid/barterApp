@@ -11,3 +11,4 @@ django-cities
 Pillow
 djangorestframework-gis
 djangorestframework-simplejwt
+drf_social_oauth2

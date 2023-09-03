@@ -2,8 +2,18 @@ from django.contrib.gis.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
 from cities.models import Country
+from django.contrib.auth.models import AbstractUser
 
-User = get_user_model()
+
+# User = get_user_model()
+
+class User(AbstractUser):
+    username = models.CharField(max_length=255, unique=False, null=True, blank=True)
+    email = models.EmailField(unique=True, null=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
 
 class ContactMethod(models.Model):
     name = models.CharField(max_length=20)
