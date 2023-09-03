@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const handleLogout = () => {
     setToken(null);
+    localStorage.removeItem('token');
     setUsername(null);
     setSigned(false);
   }
