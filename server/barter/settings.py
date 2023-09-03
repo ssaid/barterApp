@@ -34,8 +34,6 @@ class Dev(Configuration):
     ALLOWED_HOSTS = values.ListValue([], separator=';')
     CSRF_TRUSTED_ORIGINS = values.ListValue([], separator=';')
     CORS_ALLOWED_ORIGINS = values.ListValue([], separator=';')
-    CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
-    print(CORS_ALLOWED_ORIGINS)
 
 # Application definition
 
