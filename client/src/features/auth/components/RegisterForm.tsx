@@ -5,29 +5,33 @@ import { UserCreate } from '../../../types/user';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc'
+import { useRegister } from '../hooks/useRegister';
 
 const initialValues: UserCreate = {
-  name: '',
+  username: '',
   email: '',
   password: '',
 }
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Campo requerido'),
+  username: Yup.string().required('Campo requerido'),
   email: Yup.string().email('Email invalido').required('Campo requerido'),
   password: Yup.string().required('Campo requerido'),
 })
 
+
 export const RegisterForm = () => {
 
   const [ pswVisible, setPswVisible ] = useState(false)
+
+  const { mutation } = useRegister()
 
   const togglePswVisibility = () => {
     setPswVisible(visible => !visible)
   }
 
   const handleSubmit = (values: UserCreate) => {
-    console.log(values)
+    mutation.mutate(values)
   }
 
   return (
@@ -52,12 +56,12 @@ export const RegisterForm = () => {
                 <Field 
                   as={Input}
                   variant="bordered"
-                  name="name" 
-                  type="name" 
-                  color={formik.touched.name && formik.errors.name ? "danger" : ""}
-                  placeholder="Nombre" 
-                  validationState={formik.touched.name && formik.errors.name ? "error" : ""}
-                  errorMessage={formik.touched.name && formik.errors.name && formik.errors.name}
+                  name="username" 
+                  type="text" 
+                  color={formik.touched.username && formik.errors.username ? "danger" : ""}
+                  placeholder="Nombre completo" 
+                  validationState={formik.touched.username && formik.errors.username ? "error" : ""}
+                  errorMessage={formik.touched.username && formik.errors.username && formik.errors.username}
                 />
                 <Field 
                   as={Input}
@@ -89,8 +93,15 @@ export const RegisterForm = () => {
                   type={pswVisible ? "text" : "password"}
                 />
               </CardBody>
-              <CardFooter className="justify-end" >
-                <Button variant="solid" color="primary" type="submit">
+              <CardFooter className="justify-end gap-4" >
+                {
+                  mutation.isError
+                    && 
+                    <p className="text-danger" >
+                      {"Ha ocurrido un error. Vuelve a intentar mas tarde."}
+                    </p>
+                }
+                <Button variant="solid" color="primary" type="submit" isLoading={mutation.isLoading}>
                   Registrarse
                 </Button>
               </CardFooter>

@@ -1,5 +1,4 @@
-
-import { BasicInformationForm } from "../features/regiter/components/BasicInformationForm"
+import { BasicInformationForm } from "../features/auth/components/BasicInformationForm"
 
 
 export const BasicInformation = () => {

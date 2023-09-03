@@ -6,7 +6,7 @@ export type UserBase = {
 }
 
 export type UserCreate = UserBase & {
-  name: string,
+  username: string,
 }
 
 export type User = UserBase & {
