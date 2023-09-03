@@ -7,7 +7,6 @@ import {
   Avatar,
   Popover,
   PopoverTrigger,
-  User,
   PopoverContent
 } from "@nextui-org/react";
 import { ThemeSwitch } from "./ThemeSwitch";
