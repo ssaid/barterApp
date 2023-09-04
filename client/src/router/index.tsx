@@ -9,8 +9,8 @@ import {
 import { BasicInformation } from "../pages/BasicInformation";
 import { CreatePost } from "../pages/CreatePost";
 import { Logout } from "../pages/Logout";
-import { PublicRoute } from "../components/PublicRoute";
-import { PrivateRoute } from "../components/PrivateRoute";
+import { PrivateRoutes } from "../components/PrivateRoutes";
+import { PublicRoutes } from "../components/PublicRoutes";
 
 
 export const router = createBrowserRouter([
@@ -19,10 +19,23 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "/login", element: <PublicRoute><Login /></PublicRoute> },
-      { path: "/register", element: <PublicRoute><Register /></PublicRoute> },
-      { path: "user/edit-profile", element: <PrivateRoute><BasicInformation /></PrivateRoute> },
-      { path: "user/new-post", element: <PrivateRoute><CreatePost /></PrivateRoute> },
+      { 
+        path: "/", 
+        element: <PrivateRoutes />,
+        children: [
+          { path: "user/edit-profile", element: <BasicInformation /> },
+          { path: "user/new-post", element: <CreatePost /> },
+        ]
+      },
+      {
+        path: "/", 
+        element: <PublicRoutes />,
+        children: [
+          { path: "/login", element: <Login /> },
+          { path: "/register", element: <Register /> },
+        ]
+
+      },
       { path: "user/logout", element: <Logout /> },
     ],
     // errorElement: <ErrorView />,
