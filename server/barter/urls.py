@@ -19,10 +19,6 @@ from django.urls import include, path, re_path
 
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from trade.api.views import UserRegistrationView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -45,16 +41,14 @@ router = routers.DefaultRouter()
 # router.register(r'users', UserViewSet)
 
 urlpatterns = [
+    re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
     # path('trade/api/', include(router.urls)),
     path("trade/", include("trade.urls")),
     path('trade/api/', include('trade.api.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    # JWT
-    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # Authentication
     path('auth/users/', UserRegistrationView.as_view(), name='user-registration'),
-    re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
     # Swagger
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

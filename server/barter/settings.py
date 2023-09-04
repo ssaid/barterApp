@@ -49,7 +49,6 @@ class Dev(Configuration):
         'corsheaders',
         'cities',
         'rest_framework',
-        'rest_framework_simplejwt',
         'rest_framework_gis',
         'drf_yasg',
         # OAuth
@@ -146,7 +145,6 @@ class Dev(Configuration):
             'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
         ],
         'DEFAULT_AUTHENTICATION_CLASSES': [
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
             # OAuth
             'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
             'drf_social_oauth2.authentication.SocialAuthentication',
@@ -165,8 +163,9 @@ class Dev(Configuration):
     # DRFSO2_URL_NAMESPACE = ''
     # ACTIVATE_JWT = False
     # Google configuration
-    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "<your app id goes here>"
-    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "<your app secret goes here>"
+
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = values.Value("<your app id goes here>")
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = values.Value("<your app secret goes here>")
 
     # Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
     SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [

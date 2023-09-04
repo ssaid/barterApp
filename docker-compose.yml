@@ -36,6 +36,8 @@ services:
       - DJANGO_SECRET_KEY=mySuperKey
       - DJANGO_CORS_ALLOWED_ORIGINS=http://localhost:3000
       - DJANGO_ALLOWED_HOSTS=http://localhost:3000;localhost
+      - DJANGO_SOCIAL_AUTH_GOOGLE_OAUTH2_KEY='886657464296-nf7oarg2j6it3tb5j3fqrssnbi47tik9.apps.googleusercontent.com'
+      - DJANGO_SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET='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'
     depends_on:
       - db
 
