@@ -31,7 +31,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    # images = serializers.StringRelatedField(many=True)
+    images = serializers.StringRelatedField(many=True, read_only=True)
     # categories = serializers.StringRelatedField(many=True)
 
     def create(self, validated_data):
