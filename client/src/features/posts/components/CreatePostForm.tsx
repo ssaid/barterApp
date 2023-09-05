@@ -1,19 +1,20 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip } from "@nextui-org/react";
 import { Post, Category } from '../../../types/post';
 import { DragAndDropFiles } from './DragAndDropFiles';
 import { ImageUploadPreview } from './ImageUploadPreview';
 import { useMemo } from 'react';
+import { usePosts } from '../hooks/usePosts';
+import { parseError } from '../../../utils/parseError';
 
 const initialValues: Post = {
   title: '',
   description: '',
   state: 'active',
   images: [] as File[],
-  image_ppal: '',
   interactions: 0,
-  post_categories: []
+  categories: []
 
 }
 
@@ -22,18 +23,20 @@ const validationSchema = Yup.object({
   title: Yup.string().required('Este campo es requerido'),
   description: Yup.string().required('Este campo es requerido'),
   images: Yup.array().of(Yup.string()).required('Debe agregar al menos una imagen'),
-  post_categories: Yup.array().of(Yup.string()).min(1, 'Debe seleccionar al menos una categoria')
+  categories: Yup.array().of(Yup.string()).min(1, 'Debe seleccionar al menos una categoria')
 
 })
 
 export const CreatePostForm = () => {
 
-  const categories: Category[] = [
+  const post_categories: Category[] = [
     { id: 1, name: 'Arte' },
     { id: 2, name: 'Automoviles' },
     { id: 3, name: 'Indumentaria' }
   ]
 
+
+  const { postMutation, createPost, imagesMutation } = usePosts();
 
 
   return (
@@ -42,13 +45,14 @@ export const CreatePostForm = () => {
       <Divider className='my-3'/>
       <Formik
         initialValues={initialValues}
-        onSubmit={console.log}
+        onSubmit={createPost}
         validationSchema={validationSchema}
       >
         {
           formik => {
 
             const images = useMemo(() => {
+              //@ts-ignore
               return formik.values.images.map(URL.createObjectURL)
             }, [formik.values.images]);
 
@@ -75,18 +79,18 @@ export const CreatePostForm = () => {
                     validationState={formik.touched.description && formik.errors.description ? "error" : ""}
                     errorMessage={formik.touched.description && formik.errors.description && formik.errors.description}
                   />
-                  <Field name="post_categories">
+                  <Field name="categories">
                     {
                       ({ field, form, meta }) =>
                         <Select
                           label="Categorias"
-                          items={categories}
+                          items={post_categories}
                           selectionMode="multiple"
                           placeholder="Selecciona una o mas categorias"
                           color={meta.touched && meta.error ? "danger" : "default"}
                           errorMessage={meta.touched && meta.error && meta.error}
                           value={field.value}
-                          onChange={ e => form.setFieldValue('post_categories', e.target.value ? e.target.value.split(',') : []) }
+                          onChange={ e => form.setFieldValue('categories', e.target.value ? e.target.value.split(',') : []) }
                           variant='bordered'
                           classNames={{
                             label: 'py-2',
@@ -116,7 +120,7 @@ export const CreatePostForm = () => {
 
                   <div className='flex items-center justify-center gap-3 flex-col sm:flex-row'>
                     <DragAndDropFiles
-                      files={formik.values.images}
+                      files={formik.values.images as File[]}
                       accept={["image/*"]}
                       onChange={files => formik.setFieldValue("images", files)}
                     />
@@ -136,10 +140,18 @@ export const CreatePostForm = () => {
                   </div>
                 </CardBody>
                 <CardFooter className="justify-end px-5">
-                  <Button variant="solid" color="primary" type="submit">
-                    Continuar
+                  <Button variant="solid" color="primary" type="submit" isLoading={postMutation.isLoading || imagesMutation.isLoading}>
+                    Crear
                   </Button>
                 </CardFooter>
+                <div className='relative bottom-0 h-5 -mb-5 mt-4'>
+                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${postMutation.isError ? '' : 'translate-y-9'} `} >
+                    {parseError(postMutation.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
+                  </p>
+                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${imagesMutation.isError ? '' : 'translate-y-9'} `} >
+                    {parseError(imagesMutation.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
+                  </p>
+                </div>
               </Form>
             )
           }

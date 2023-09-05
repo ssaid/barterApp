@@ -21,14 +21,25 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class ImageSerializer(serializers.ModelSerializer):
+
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+
     class Meta:
         model = Image
-        fields = "__all__"
+        fields = ['image', 'post']
+
 
 class PostSerializer(serializers.ModelSerializer):
-    # images = ImageSerializer(many=True)
-    # image_urls = serializers.HyperlinkedRelatedField()
-    images = serializers.StringRelatedField(many=True)
+
+    # images = serializers.StringRelatedField(many=True)
+    # categories = serializers.StringRelatedField(many=True)
+
+    def create(self, validated_data):
+        categories_data = validated_data.pop('categories')
+        post = Post.objects.create(**validated_data)
+        post.categories.set(categories_data)
+        post.save()
+        return post
 
     class Meta:
         model = Post

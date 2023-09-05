@@ -9,7 +9,7 @@ services:
       - ./client:/app
     command: sh -c "yarn dev"
     environment:
-      - VITE_BASE_API_URL=https://localhost:8000
+      - VITE_BASE_API_URL=https://localhost:8000/api/v1
   db:
     image: postgis/postgis:15-3.4
     volumes:
