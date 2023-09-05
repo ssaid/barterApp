@@ -167,6 +167,10 @@ class Dev(Configuration):
     # Google configuration
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "<your app id goes here>"
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "<your app secret goes here>"
+    from datetime import timedelta
+    SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),
+    }
 
     # Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
     SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
@@ -199,8 +203,9 @@ class Dev(Configuration):
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-    MEDIA_URL = '/media/'
+    MEDIA_URL = 'media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    print(MEDIA_ROOT)
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SWAGGER_SETTINGS = {

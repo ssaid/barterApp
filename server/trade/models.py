@@ -67,3 +67,6 @@ class Image(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='posts', blank=True, null=True)
     is_main = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.image.url

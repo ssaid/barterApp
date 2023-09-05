@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from trade.models import UserInformation
+from trade.models import UserInformation, Post, Image
 
 class UserInformationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +20,17 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = "__all__"
+
+class PostSerializer(serializers.ModelSerializer):
+    # images = ImageSerializer(many=True)
+    # image_urls = serializers.HyperlinkedRelatedField()
+    images = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+        read_only_fields = ['id', 'user']
