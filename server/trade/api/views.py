@@ -4,12 +4,72 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer
+from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from trade.models import UserInformation, Post
+from trade.models import UserInformation, Post, Country, ContactMethod
+from cities.models import Region
+from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
+class LocationInfoView(APIView):
+    serializer_class = LocationSerializer
+    queryset = UserInformation.objects.all()
+
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                'latitude',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_NUMBER,
+                description='Latitude of the location',
+                required=True,
+            ),
+            openapi.Parameter(
+                'longitude',
+                in_=openapi.IN_QUERY,
+                type=openapi.TYPE_NUMBER,
+                description='Longitude of the location',
+                required=True,
+            ),
+        ],
+        responses={
+            status.HTTP_200_OK: openapi.Response('City and Region information', LocationSerializer),
+            status.HTTP_400_BAD_REQUEST: 'Invalid input',
+        },
+    )
+    def get(self, request):
+        serializer = self.serializer_class(data=request.query_params)
+
+        if serializer.is_valid():
+            latitude = serializer.validated_data['latitude']
+            longitude = serializer.validated_data['longitude']
+
+            data = UserInformation.get_coord_info(latitude, longitude)
+            if not data:
+                return Response({'error': 'No city found'}, status=status.HTTP_404_NOT_FOUND)
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RegionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Region.objects.filter(country__name='Argentina')
+    serializer_class = RegionSerializer
+
+
+class ContactMethodViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ContactMethod.objects.all()
+    serializer_class = ContactMethodSerializer
+
+
+class CountryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -43,8 +103,6 @@ class ImageUploadView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
-
-
 class MyPostViewSet(viewsets.ModelViewSet):
 
     queryset = Post.objects.prefetch_related('images', 'categories').all()
@@ -57,6 +115,3 @@ class MyPostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-
-

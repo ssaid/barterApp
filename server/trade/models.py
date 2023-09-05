@@ -1,8 +1,9 @@
 from django.contrib.gis.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import Point
-from cities.models import Country
+from cities.models import Country, City
 from django.contrib.auth.models import AbstractUser
+import math
 
 
 # User = get_user_model()
@@ -37,6 +38,50 @@ class UserInformation(models.Model):
     @property
     def latitude(self):
         return self.location.y
+
+    @staticmethod
+    def calculate_distance(point1, point2):
+        # Haversine formula for calculating distances between points
+        lat1, lon1 = point1.coords
+        lat2, lon2 = point2.coords
+        radius = 6371  # Earth's radius in kilometers
+
+        dlat = math.radians(lat2 - lat1)
+        dlon = math.radians(lon2 - lon1)
+        a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        distance = radius * c
+
+        return distance
+
+    @classmethod
+    def get_coord_info(self, latitude, longitude):
+        # Given a latitude and longitude, find the nearest city
+        given_point = Point(longitude, latitude)
+
+        nearest_city = None
+        min_distance = float('inf')
+
+        for city in City.objects.all():
+            city_point = city.location  # Use the 'location' field
+            distance = self.calculate_distance(given_point, city_point)
+            if distance < min_distance:
+                min_distance = distance
+                nearest_city = city
+
+        dd = {}
+        if nearest_city:
+            city_str = f"Nearest city: {nearest_city.name} (Distance: {min_distance:.2f} km)"
+            city_name = nearest_city.name
+            region_name = nearest_city.region.name
+            dd = {
+                'city_str': city_str,
+                'city_name': nearest_city.name,
+                'region_id': str(nearest_city.region.id),
+                'country_id': str(nearest_city.country.id),
+                # 'city': nearest_city,
+            }
+        return dd
 
 class Contact(models.Model):
     description = models.CharField(max_length=200)

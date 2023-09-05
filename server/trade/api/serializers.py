@@ -1,7 +1,28 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from trade.models import UserInformation, Post, Image
+from trade.models import UserInformation, Post, Image, ContactMethod
+from cities.models import Country, Region
+
+class LocationSerializer(serializers.Serializer):
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()
+
+# Provinces
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = ["id","name"]
+
+class ContactMethodSerializer(serializers.ModelSerializer):   
+    class Meta:
+        model = ContactMethod
+        fields = "__all__"
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ["id", "name","code"]
 
 class UserInformationSerializer(serializers.ModelSerializer):
     class Meta:
