@@ -46,15 +46,15 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     # path('trade/api/', include(router.urls)),
-    path("trade/", include("trade.urls")),
-    path('trade/api/', include('trade.api.urls')),
+    # path("trade/", include("trade.urls")),
+    path('api/v1/', include('trade.api.urls')),
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/api-auth/', include('rest_framework.urls')),
     # JWT
-    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/users/', UserRegistrationView.as_view(), name='user-registration'),
-    re_path(r'^auth/', include('drf_social_oauth2.urls', namespace='drf')),
+    path('api/v1/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/auth/users/', UserRegistrationView.as_view(), name='user-registration'),
+    re_path('api/v1/auth/', include('drf_social_oauth2.urls', namespace='drf')),
     # Swagger
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
