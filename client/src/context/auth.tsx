@@ -7,9 +7,11 @@ export const AuthContext = createContext({} as AuthData);
 
 export const AuthProvider = ({ children }: any) => {
 
+  const localToken = localStorage.getItem('token');
+
   const [username, setUsername] = useState<string>();
-  const [signed, setSigned] = useState<boolean>(false);
-  const [token, setToken] = useState<string>();
+  const [signed, setSigned] = useState<boolean>( !!localToken );
+  const [token, setToken] = useState<string | undefined>(localToken);
 
   const handleLogin = ({ token }) => {
     setToken(token);
@@ -23,14 +25,6 @@ export const AuthProvider = ({ children }: any) => {
     setSigned(false);
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      setToken(token)
-      setSigned(true)
-    }
-
-  }, [])
 
   return (
     <AuthContext.Provider

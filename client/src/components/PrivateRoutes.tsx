@@ -8,6 +8,7 @@ export const PrivateRoutes: FC = () => {
 
   const { signed } = useContext(AuthContext)
 
+
   return signed ? <Outlet /> : <Navigate to="/login" />
 
 }
