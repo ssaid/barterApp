@@ -38,6 +38,8 @@ class Dev(Configuration):
 # Application definition
 
     INSTALLED_APPS = [
+        # Disable django static file handling
+        'whitenoise.runserver_nostatic',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -61,9 +63,9 @@ class Dev(Configuration):
     ]
 
     MIDDLEWARE = [
+        'whitenoise.middleware.WhiteNoiseMiddleware',
         'corsheaders.middleware.CorsMiddleware',
         'django.middleware.security.SecurityMiddleware',
-        'whitenoise.middleware.WhiteNoiseMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         # 'django.middleware.csrf.CsrfViewMiddleware',
@@ -197,14 +199,16 @@ class Dev(Configuration):
 # STATIC_URL = 'static/'
     STATIC_URL = values.Value('/static/')
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    # WHITENOISE_STATIC_PREFIX = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-    MEDIA_URL = 'media/'
+    MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    print('MEDIA_ROOT: ', MEDIA_ROOT)
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SWAGGER_SETTINGS = {

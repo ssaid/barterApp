@@ -13,3 +13,4 @@ djangorestframework-gis
 djangorestframework-simplejwt
 drf_social_oauth2
 django-cors-headers
+django-versatileimagefield

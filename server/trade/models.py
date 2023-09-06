@@ -4,6 +4,7 @@ from django.contrib.gis.geos import Point
 from cities.models import Country, City
 from django.contrib.auth.models import AbstractUser
 import math
+from versatileimagefield.fields import VersatileImageField
 
 
 # User = get_user_model()
@@ -18,14 +19,14 @@ class User(AbstractUser):
 
 class ContactMethod(models.Model):
     name = models.CharField(max_length=20)
-    image = models.ImageField(upload_to='contact_methods', blank=True, null=True)
+    image = VersatileImageField(upload_to='contact_methods', blank=True, null=True)
 
     def __str__(self):
         return self.name
 
 
 class UserInformation(models.Model):
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    avatar = VersatileImageField(upload_to='avatars/', blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     location = models.PointField(geography=True, default=Point(0.0, 0.0))
     # https://raphael-leger.medium.com/django-handle-latitude-and-longitude-54a4bb2f6e3b
@@ -91,7 +92,7 @@ class Contact(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=50)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    image = models.ImageField(upload_to='categories', blank=True, null=True)
+    image = VersatileImageField(upload_to='categories', blank=True, null=True)
     icon = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -110,7 +111,7 @@ class Post(models.Model):
 
 class Image(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='posts', blank=True, null=True)
+    image = VersatileImageField(upload_to='posts', blank=True, null=True)
     is_main = models.BooleanField(default=False)
 
     def __str__(self):
