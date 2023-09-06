@@ -10,6 +10,7 @@ class LocationSerializer(serializers.Serializer):
 
 # Provinces
 class RegionSerializer(serializers.ModelSerializer):
+    id = serializers.CharField()
     class Meta:
         model = Region
         fields = ["id","name"]
@@ -20,6 +21,8 @@ class ContactMethodSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class CountrySerializer(serializers.ModelSerializer):
+    id = serializers.CharField()
+
     class Meta:
         model = Country
         fields = ["id", "name","code"]

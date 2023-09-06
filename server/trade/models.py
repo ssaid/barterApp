@@ -62,7 +62,7 @@ class UserInformation(models.Model):
         nearest_city = None
         min_distance = float('inf')
 
-        for city in City.objects.all():
+        for city in City.objects.filter(country__name__iexact="argentina").all():
             city_point = city.location  # Use the 'location' field
             distance = self.calculate_distance(given_point, city_point)
             if distance < min_distance:
