@@ -57,18 +57,18 @@ class LocationInfoView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class RegionViewSet(viewsets.ReadOnlyModelViewSet):
+class RegionView(generics.ListAPIView):
     queryset = Region.objects.filter(country__name='Argentina')
     serializer_class = RegionSerializer
 
 
-class ContactMethodViewSet(viewsets.ReadOnlyModelViewSet):
+class ContactMethodView(generics.ListAPIView):
     queryset = ContactMethod.objects.all()
     serializer_class = ContactMethodSerializer
 
 
-class CountryViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Country.objects.all()
+class CountryView(generics.ListAPIView):
+    queryset = Country.objects.filter(name__iexact='argentina')
     serializer_class = CountrySerializer
 
 
