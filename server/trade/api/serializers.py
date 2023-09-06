@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 from trade.models import UserInformation, Post, Image, ContactMethod
 from cities.models import Country, Region
+from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 class LocationSerializer(serializers.Serializer):
     latitude = serializers.FloatField()
@@ -28,6 +29,12 @@ class CountrySerializer(serializers.ModelSerializer):
         fields = ["id", "name","code"]
 
 class UserInformationSerializer(serializers.ModelSerializer):
+    avatar = VersatileImageFieldSerializer(sizes=[
+        ('full_size', 'url'),
+        ('thumbnail', 'thumbnail__100x100'),
+        ('medium_square_crop', 'crop__400x400'),
+        ('small_square_crop', 'crop__50x50'),
+    ])
     class Meta:
         model = UserInformation
         fields = "__all__"

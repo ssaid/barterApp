@@ -54,6 +54,8 @@ class Dev(Configuration):
         'rest_framework_simplejwt',
         'rest_framework_gis',
         'drf_yasg',
+        # versatileimagefield
+        'versatileimagefield',
         # OAuth
         'oauth2_provider',
         'social_django',
