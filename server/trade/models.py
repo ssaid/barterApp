@@ -113,21 +113,25 @@ class Category(models.Model):
         except Category.DoesNotExist:
             return True
 
+    def generate_slug_from_ancestors(self):
+        """Recursively generate slug from category and its ancestors."""
+        ancestors = [slugify(self.name)]
+        parent = self.parent
+        while parent:
+            ancestors.insert(0, slugify(parent.name))
+            parent = parent.parent
+
+        return "-".join(ancestors)
+
     def generate_unique_slug(self):
         """Generate a unique slug for the category using ancestors' names."""
-        base_slug = slugify(self.name)
-        
-        if self.parent:
-            base_slug = f"{self.parent.slug}-{base_slug}"
+        base_slug = self.generate_slug_from_ancestors()
 
-        slug = base_slug
-        counter = 1
+        # Check if the slug is unique
+        if Category.objects.filter(slug=base_slug).exists():
+            raise Exception(f"The slug '{base_slug}' already exists.")
 
-        while Category.objects.filter(slug=slug).exists():
-            slug = f"{base_slug}-{counter}"
-            counter += 1
-
-        return slug
+        return base_slug
 
 
 class Post(models.Model):
