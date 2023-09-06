@@ -64,17 +64,21 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class ImageSerializer(serializers.ModelSerializer):
-
+    image = VersatileImageFieldSerializer(sizes=[
+        ('full_size', 'url'),
+        ('thumbnail', 'thumbnail__100x100'),
+        ('medium_square_crop', 'crop__400x400'),
+        ('small_square_crop', 'crop__50x50'),])
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
         model = Image
-        fields = ['image', 'post']
+        fields = ['image', 'is_main', 'post']
 
 
 class PostSerializer(serializers.ModelSerializer):
-
-    images = serializers.StringRelatedField(many=True, read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
+    # images = serializers.StringRelatedField(many=True, read_only=True)
     # categories = serializers.StringRelatedField(many=True)
 
     def create(self, validated_data):
