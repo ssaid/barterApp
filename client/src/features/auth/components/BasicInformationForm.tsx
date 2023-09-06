@@ -165,11 +165,12 @@ export const BasicInformationForm = () => {
                       <Button 
                         isIconOnly
                         className="bg-default/50 hover:bg-default/80 text-foreground cursor-pointer"
+                        onClick={handleLocation}
                       >
                         {
                           location.isLoading
                           ? <Spinner size='sm' color="current" />
-                          : <MdPlace onClick={handleLocation} className="text-lg" />
+                          : <MdPlace className="text-lg" />
                         }
                       </Button>
                     }
