@@ -5,6 +5,7 @@ from cities.models import Country, City
 from django.contrib.auth.models import AbstractUser
 import math
 from versatileimagefield.fields import VersatileImageField
+from django.utils.text import slugify
 
 
 # User = get_user_model()
@@ -94,9 +95,40 @@ class Category(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     image = VersatileImageField(upload_to='categories', blank=True, null=True)
     icon = models.CharField(max_length=50, blank=True, null=True)
+    slug = models.SlugField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id or self.name_changed():
+            self.slug = self.generate_unique_slug()
+        super(Category, self).save(*args, **kwargs)
+
+    def name_changed(self):
+        """Check if name has changed since the last save."""
+        try:
+            obj = Category.objects.get(id=self.id)
+            return obj.name != self.name
+        except Category.DoesNotExist:
+            return True
+
+    def generate_unique_slug(self):
+        """Generate a unique slug for the category using ancestors' names."""
+        base_slug = slugify(self.name)
+        
+        if self.parent:
+            base_slug = f"{self.parent.slug}-{base_slug}"
+
+        slug = base_slug
+        counter = 1
+
+        while Category.objects.filter(slug=slug).exists():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+
+        return slug
+
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
