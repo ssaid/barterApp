@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer
+from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from trade.models import UserInformation, Post, Country, ContactMethod
+from trade.models import UserInformation, Post, Country, ContactMethod, Category
 from cities.models import Region
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
@@ -86,6 +86,11 @@ class UserRegistrationView(generics.CreateAPIView):
         instance = serializer.save()
         UserInformation.objects.create(user=instance)
         instance.save()
+
+
+class CategoryView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class UserInformationDetailView(generics.RetrieveUpdateAPIView):

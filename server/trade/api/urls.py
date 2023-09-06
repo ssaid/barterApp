@@ -9,6 +9,7 @@ from .views import (
     RegionView,
     ContactMethodView,
     LocationInfoView,
+    CategoryView,
 )
 from django.conf.urls.static import static
 from django.conf import settings
@@ -24,5 +25,6 @@ urlpatterns = [
     path('countries/', CountryView.as_view(), name='countries-list'),
     path('regions/', RegionView.as_view(), name='regions-list'),
     path('contactmethods/', ContactMethodView.as_view(), name='contactmethods-list'),
+    path('categories/', CategoryView.as_view(), name='categories-list'),
     # path('posts/my/<int:id>/', MyPostViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='post-detail'),
 ] + router.urls
