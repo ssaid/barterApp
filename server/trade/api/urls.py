@@ -16,7 +16,7 @@ from django.conf import settings
 from django.views.static import serve
 
 router = routers.SimpleRouter()
-router.register(r'posts', MyPostViewSet)
+router.register(r'myposts', MyPostViewSet)
 
 urlpatterns = [
     path('users/info/', UserInformationDetailView.as_view(), name='user-info'),

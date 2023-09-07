@@ -3,9 +3,14 @@ import { Post } from "../../../types/post";
 
 
 export const createPost = async(post: Post) => 
-  await api.post("/posts/", post);
+  await api.post("/myposts/", post);
 
 
 export const uploadPostImage = async(image: {post: number, image:File}) => 
   await api.post("/images/", image, { headers: { "Content-Type": "multipart/form-data", } });
+
+export const getMyPosts = async() => {
+  const { data } = await api.get<Post[]>("/myposts/");
+  return data;
+}
 

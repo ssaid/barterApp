@@ -11,6 +11,7 @@ import { CreatePost } from "../pages/CreatePost";
 import { Logout } from "../pages/Logout";
 import { PrivateRoutes } from "../components/PrivateRoutes";
 import { PublicRoutes } from "../components/PublicRoutes";
+import { MyPosts } from "../pages/MyPosts";
 
 
 export const router = createBrowserRouter([
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "user/edit-profile", element: <BasicInformation /> },
           { path: "user/new-post", element: <CreatePost /> },
+          { path: "user/my-posts", element: <MyPosts /> },
         ]
       },
       {

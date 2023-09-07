@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import * as service from "../services"
 import { Post } from "../../../types/post"
+import { Navigate } from "react-router-dom"
 
 
 
@@ -25,6 +26,9 @@ export const usePosts = () => {
         imagesMutation.mutate({ image, post: id })
       })
 
+      if (imagesMutation.isSuccess){
+        return <Navigate to="/user/my-posts" />
+      }
     }
 
 

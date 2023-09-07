@@ -9,8 +9,8 @@ from versatileimagefield.serializers import VersatileImageFieldSerializer
 class CategorySerializer(serializers.ModelSerializer):
     image = VersatileImageFieldSerializer(sizes=[
         ('full_size', 'url'),
-        ('thumbnail', 'thumbnail__100x100'),
-        ('medium_square_crop', 'crop__400x400'),
+        ('thumbnail', 'thumbnail__200x200'),
+        ('medium_square_crop', 'crop__125x125'),
         ('small_square_crop', 'crop__50x50'),
     ])
     class Meta:
@@ -67,7 +67,7 @@ class ImageSerializer(serializers.ModelSerializer):
     image = VersatileImageFieldSerializer(sizes=[
         ('full_size', 'url'),
         ('thumbnail', 'thumbnail__100x100'),
-        ('medium_square_crop', 'crop__400x400'),
+        ('medium_square_crop', 'crop__100x100'),
         ('small_square_crop', 'crop__50x50'),])
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
@@ -79,7 +79,7 @@ class ImageSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     # images = serializers.StringRelatedField(many=True, read_only=True)
-    # categories = serializers.StringRelatedField(many=True)
+    categories = CategorySerializer(many=True, read_only=True)
 
     def create(self, validated_data):
         categories_data = validated_data.pop('categories')

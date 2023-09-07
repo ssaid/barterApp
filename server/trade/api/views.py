@@ -115,6 +115,26 @@ class MyPostViewSet(viewsets.ModelViewSet):
     permission_classes = [ permissions.IsAuthenticated ]
 
 
+    def create(self, request, *args, **kwargs):
+        print("""
+
+
+
+
+        """)
+
+        print(request.data)
+
+        categories = Category.objects.filter(id__in=request.data['categories'])
+
+        print(categories)
+
+
+        request.data['categories'] = categories
+
+        return super().create(request, *args, **kwargs)
+
+
     def get_queryset(self):
         return Post.objects.filter(user=self.request.user).prefetch_related('images', 'categories').all()
 

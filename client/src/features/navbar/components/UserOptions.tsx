@@ -34,7 +34,7 @@ export const UserOptions = () => {
         Crear Post
       </ListboxItem>
       <ListboxItem
-        key="user/posts"
+        key="user/my-posts"
         className="text-end"
         endContent={
           <IconWrapper className="bg-secondary/10 text-secondary">
