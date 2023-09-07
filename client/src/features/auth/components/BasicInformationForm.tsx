@@ -52,7 +52,7 @@ export const BasicInformationForm = () => {
 
   const initialValues: UserInformation = {
     country: countries.data[0].id,
-    state: states.data[0].id,
+    state: null,
     city: '',
     contact_methods: [
       { method: '', value: '' }
@@ -132,7 +132,6 @@ export const BasicInformationForm = () => {
                     color={formik.touched.state && formik.errors.state ? "danger" : ""}
                     label="Provincia" 
                     selectedKeys={[formik.values.state]}
-                    defaultSelectedKeys={[formik.values.state]}
                     validationState={formik.touched.state && formik.errors.state ? "error" : ""}
                     errorMessage={formik.touched.state && formik.errors.state && formik.errors.state}
                   >
