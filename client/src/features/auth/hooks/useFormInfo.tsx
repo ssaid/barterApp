@@ -1,6 +1,5 @@
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query"
+import { useMutation, useQueries } from "@tanstack/react-query"
 import * as service from "../services"
-import { Point } from "../../../types/location"
 
 
 

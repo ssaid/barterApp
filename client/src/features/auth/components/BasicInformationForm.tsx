@@ -1,17 +1,14 @@
-import { Field, FieldArray, useFormik, FormikProvider, Formik } from 'formik';
+import { Field, FieldArray, Formik } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Spinner} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Spinner } from "@nextui-org/react";
 import { UserInformation } from '../../../types/user';
 import { MdAdd, MdDelete, MdPlace } from 'react-icons/md';
-import * as service from '../services';
 
 import wp_icon from '../../../assets/whatsapp_icon.png'
 import fb_icon from '../../../assets/facebook_icon.ico'
-import { IconWrapper } from '../../../components/IconWrapper';
 import { useFormInfo } from '../hooks/useFormInfo';
-import { useCallback, useEffect, useState } from 'react';
-import { Point } from '../../../types/location';
-import { useQuery } from '@tanstack/react-query';
+import { useCallback } from 'react';
+import { BasicInformationFormSkeleton } from './BasicInformationFormSkeleton';
 
 const enum MethodLabels{
   'whatsapp'= 'Telefono',
@@ -48,7 +45,8 @@ export const BasicInformationForm = () => {
     }
   ]
 
-  if (loading) return <p>loading</p>
+  if (loading) return <BasicInformationFormSkeleton />
+
 
   const initialValues: UserInformation = {
     country: countries.data[0].id,
@@ -101,7 +99,7 @@ export const BasicInformationForm = () => {
                     variant="bordered"
                     label="Pais" 
                     name="country" 
-                    defaultSelectedKeys={[formik.values.country]}
+                    defaultSelectedKeys={formik.values.country ? [formik.values.country] : []}
                     color={formik.touched.country && formik.errors.country ? "danger" : ""}
                     validationState={formik.touched.country && formik.errors.country ? "error" : ""}
                     errorMessage={formik.touched.country && formik.errors.country && formik.errors.country}
@@ -131,7 +129,7 @@ export const BasicInformationForm = () => {
                     name="state" 
                     color={formik.touched.state && formik.errors.state ? "danger" : ""}
                     label="Provincia" 
-                    selectedKeys={[formik.values.state]}
+                    selectedKeys={formik.values.state ? [formik.values.state] : []}
                     validationState={formik.touched.state && formik.errors.state ? "error" : ""}
                     errorMessage={formik.touched.state && formik.errors.state && formik.errors.state}
                   >
@@ -271,6 +269,5 @@ export const BasicInformationForm = () => {
       </Formik>
     </Card>
   )
-
 
 }

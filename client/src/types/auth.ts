@@ -7,7 +7,6 @@ export type AuthData = {
   token: string;
   handleLogin: ({token}) => void;
   handleLogout: () => void;
-  loading: boolean;
 }
 
 export type LoginToken = {
