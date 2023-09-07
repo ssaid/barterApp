@@ -11,7 +11,7 @@ class CategorySerializer(serializers.ModelSerializer):
         ('full_size', 'url'),
         ('thumbnail', 'thumbnail__200x200'),
         ('medium_square_crop', 'crop__125x125'),
-        ('small_square_crop', 'crop__50x50'),
+        ('small_square_crop', 'crop__100x100'),
     ])
     class Meta:
         model = Category

@@ -14,3 +14,5 @@ export const getMyPosts = async() => {
   return data;
 }
 
+export const patchPost = async(post: Partial<Post>) => 
+  await api.patch<Post>(`/myposts/${post.id}/`, post);

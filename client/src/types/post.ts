@@ -6,6 +6,7 @@ export type Post = {
   title: string;
   description: string;
   categories: Category[] | number[];
+  likes: number;
   interactions: number;
   state: 'draft' | 'active' | 'done';
   images: File[] | Image[];

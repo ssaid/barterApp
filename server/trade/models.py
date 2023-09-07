@@ -135,8 +135,8 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=50)
-    description = models.TextField()
+    title = models.CharField(max_length=50, blank=True)
+    description = models.TextField(blank=True)
     categories = models.ManyToManyField(Category, related_name='posts')
     user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     state = models.CharField(max_length=50, choices=[('draft', 'Inactiva'), ('active', 'Activa'), ('done', 'Finalizada')], default='draft')
@@ -144,6 +144,10 @@ class Post(models.Model):
     likes = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta: 
+        ordering = ['-created_at']
+
 
 class Image(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
