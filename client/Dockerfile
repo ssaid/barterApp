@@ -1,5 +1,5 @@
 # Build Production Files
-FROM node:20-alpine AS production-build
+FROM node:18-alpine AS production-build
 
 WORKDIR /app
 
