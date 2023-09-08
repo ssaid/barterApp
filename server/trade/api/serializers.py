@@ -17,6 +17,10 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
+    def validate(self, data):
+        print(data)
+        return data
+
 class LocationSerializer(serializers.Serializer):
     latitude = serializers.FloatField()
     longitude = serializers.FloatField()
@@ -79,14 +83,17 @@ class ImageSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     # images = serializers.StringRelatedField(many=True, read_only=True)
-    categories = CategorySerializer(many=True, read_only=True)
+    categories = CategorySerializer(many=True)
 
-    def create(self, validated_data):
-        categories_data = validated_data.pop('categories')
-        post = Post.objects.create(**validated_data)
-        post.categories.set(categories_data)
-        post.save()
-        return post
+    class Meta:
+        model = Post
+        fields = "__all__"
+        read_only_fields = ['id', 'user']
+
+class PostSerializerCustom(serializers.ModelSerializer):
+    images = ImageSerializer(many=True, read_only=True)
+    # images = serializers.StringRelatedField(many=True, read_only=True)
+    categories = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), many=True)
 
     class Meta:
         model = Post

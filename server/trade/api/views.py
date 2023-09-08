@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer
+from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -114,29 +114,13 @@ class MyPostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [ permissions.IsAuthenticated ]
 
-
-    def create(self, request, *args, **kwargs):
-        print("""
-
-
-
-
-        """)
-
-        print(request.data)
-
-        categories = Category.objects.filter(id__in=request.data['categories'])
-
-        print(categories)
-
-
-        request.data['categories'] = categories
-
-        return super().create(request, *args, **kwargs)
-
-
     def get_queryset(self):
         return Post.objects.filter(user=self.request.user).prefetch_related('images', 'categories').all()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action in ('list', 'retrieve', 'delete'):
+            return PostSerializer
+        return PostSerializerCustom
