@@ -47,8 +47,8 @@ export const WidePostCard = ({ post }: WidePostCardProps) => {
               shadow="md"
               src={
                 isMobile
-                ? (post.images as ImageType[])[0].image.medium_square_crop
-                : (post.images as ImageType[])[0].image.small_square_crop
+                ? (post.images as ImageType[])[0].image.small_square_crop
+                : (post.images as ImageType[])[0].image.medium_square_crop
               }
               width={ isMobile ? "100px" : "125px" }
             />

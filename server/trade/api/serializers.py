@@ -68,11 +68,14 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class ImageSerializer(serializers.ModelSerializer):
-    image = VersatileImageFieldSerializer(sizes=[
-        ('full_size', 'url'),
-        ('thumbnail', 'thumbnail__100x100'),
-        ('medium_square_crop', 'crop__100x100'),
-        ('small_square_crop', 'crop__50x50'),])
+    image = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__100x100'),
+            ('medium_square_crop', 'crop__125x125'),
+            ('small_square_crop', 'crop__100x100'),
+        ]
+    )
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
