@@ -10,6 +10,7 @@ from .views import (
     ContactMethodView,
     LocationInfoView,
     CategoryView,
+    AllPostView,
 )
 from django.conf.urls.static import static
 from django.conf import settings
@@ -17,6 +18,7 @@ from django.views.static import serve
 
 router = routers.SimpleRouter()
 router.register(r'myposts', MyPostViewSet)
+router.register(r'posts', AllPostView)
 
 urlpatterns = [
     path('users/info/', UserInformationDetailView.as_view(), name='user-info'),

@@ -124,3 +124,8 @@ class MyPostViewSet(viewsets.ModelViewSet):
         if self.action in ('list', 'retrieve', 'delete'):
             return PostSerializer
         return PostSerializerCustom
+
+class AllPostView(viewsets.ReadOnlyModelViewSet):
+    queryset = Post.objects.prefetch_related('images', 'categories').all()
+    serializer_class = PostSerializer
+    permission_classes = [ permissions.AllowAny ]
