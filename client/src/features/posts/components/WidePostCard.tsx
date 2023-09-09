@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import {Card, CardBody, Image, Button, Progress, Chip, Tooltip, Spinner} from "@nextui-org/react";
+import { useState } from "react";
+import {Card, CardBody, Image, Button, Tooltip, Spinner} from "@nextui-org/react";
 import { Image as ImageType, Post } from "../../../types/post";
 import { AiFillEye, AiFillHeart } from "react-icons/ai";
 import { MdOutlineUnpublished } from "react-icons/md";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { IconWrapperWithCounter } from "../../../components/IconWraperWithCounter";
 import { HiPencilSquare } from "react-icons/hi2";
-import { Category } from "../../../types/category";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation } from "@tanstack/react-query";
 import { patchPost } from "../services";
@@ -39,7 +38,7 @@ export const WidePostCard = ({ post }: WidePostCardProps) => {
     >
       <CardBody>
         <div className="flex gap-4 items-stretch">
-          <div className="shrink-0">
+          <div className="shrink-0 items-center flex">
             <Image
               alt="Album cover"
               className="object-cover"
@@ -47,8 +46,8 @@ export const WidePostCard = ({ post }: WidePostCardProps) => {
               shadow="md"
               src={
                 isMobile
-                ? (post.images as ImageType[])[0].image.small_square_crop
-                : (post.images as ImageType[])[0].image.medium_square_crop
+                ? (post.images as ImageType[])[0]?.image.small_square_crop
+                : (post.images as ImageType[])[0]?.image.medium_square_crop
               }
               width={ isMobile ? "100px" : "125px" }
             />

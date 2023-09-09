@@ -48,10 +48,8 @@ export const BasicInformationForm = () => {
   if (loading) return <BasicInformationFormSkeleton />
 
 
-  const initialValues: UserInformation = {
+  const initialValues: Partial<UserInformation> = {
     country: countries.data[0].id,
-    state: null,
-    city: '',
     contact_methods: [
       { method: '', value: '' }
     ]
@@ -130,7 +128,9 @@ export const BasicInformationForm = () => {
                     color={formik.touched.state && formik.errors.state ? "danger" : ""}
                     label="Provincia" 
                     selectedKeys={formik.values.state ? [formik.values.state] : []}
+                    onChange={ e => formik.setFieldValue('state', e.target.value) }
                     validationState={formik.touched.state && formik.errors.state ? "error" : ""}
+                    // onClose={() => formik.setFieldTouched('state', true)}
                     errorMessage={formik.touched.state && formik.errors.state && formik.errors.state}
                   >
                     {

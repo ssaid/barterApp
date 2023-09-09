@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip } from "@nextui-org/react";
 import { Post, Category } from '../../../types/post';
@@ -14,17 +14,16 @@ const initialValues: Post = {
   state: 'active',
   images: [] as File[],
   interactions: 0,
-  categories: []
-
+  categories: [],
+  likes: 0
 }
 
 
 const validationSchema = Yup.object({
   title: Yup.string().required('Este campo es requerido'),
   description: Yup.string().required('Este campo es requerido'),
-  images: Yup.array().of(Yup.string()).required('Debe agregar al menos una imagen'),
+  images: Yup.array().of(Yup.string()).min(1, 'El post debe tener al menos una foto').required('Debe agregar al menos una imagen'),
   categories: Yup.array().of(Yup.string()).min(1, 'Debe seleccionar al menos una categoria')
-
 })
 
 export const CreatePostForm = () => {
@@ -90,6 +89,7 @@ export const CreatePostForm = () => {
                           color={meta.touched && meta.error ? "danger" : "default"}
                           errorMessage={meta.touched && meta.error && meta.error}
                           value={field.value}
+                          onClose={() => form.setFieldTouched('categories', true)}
                           onChange={ e => form.setFieldValue('categories', e.target.value ? e.target.value.split(',') : []) }
                           variant='bordered'
                           classNames={{
@@ -125,6 +125,7 @@ export const CreatePostForm = () => {
                       onChange={files => formik.setFieldValue("images", files)}
                     />
                   </div>
+                  <ErrorMessage name="images" component="div" className="text-danger text-tiny" />
                   <div className="flex flex-row gap-3 m-w-full overflow-auto p-3">
                     {
                       images.map( (image: any, idx: any) => 

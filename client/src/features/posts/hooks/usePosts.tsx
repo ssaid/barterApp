@@ -1,7 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
 import * as service from "../services"
 import { Post } from "../../../types/post"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 
 
 
@@ -11,6 +12,8 @@ export const usePosts = () => {
   const postMutation = useMutation(
     service.createPost
   )
+
+  const navigate = useNavigate()
 
   const imagesMutation = useMutation(
     service.uploadPostImage
@@ -26,15 +29,14 @@ export const usePosts = () => {
         imagesMutation.mutate({ image, post: id })
       })
 
-      if (imagesMutation.isSuccess){
-        return <Navigate to="/user/my-posts" />
-      }
     }
-
-
-
   }
 
+  useEffect(() => {
+
+    if (imagesMutation.isSuccess) navigate('/user/my-posts')
+
+  }, [imagesMutation.isSuccess])
 
   return {
     postMutation,
