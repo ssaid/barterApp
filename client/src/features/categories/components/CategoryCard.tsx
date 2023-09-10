@@ -1,5 +1,6 @@
 import { Card, CardFooter, Image } from "@nextui-org/react";
 import { Category } from "../../../types/category";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,17 +11,19 @@ type Props = {
 
 export const CategoryCard = ({ category }: Props) => {
 
+  const navigate = useNavigate()
+
   return (
     <Card
       isFooterBlurred
       isPressable
-      onPress={() => console.log("pressed")}
+      onPress={() => navigate(`/${category.slug}`)}
       radius="sm"
-      className="h-[150px] w-[150px] relative shrink-0"
+      className="h-[100px] w-[100px] sm:h-[150px] sm:w-[150px] relative shrink-0"
     >
       <Image
         alt={category.name}
-        src={category.img}
+        src={category.image.medium_square_crop}
         removeWrapper
         className="z-0 w-full h-full object-cover"
       />

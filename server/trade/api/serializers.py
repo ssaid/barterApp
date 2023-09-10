@@ -10,7 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
     image = VersatileImageFieldSerializer(sizes=[
         ('full_size', 'url'),
         ('thumbnail', 'thumbnail__200x200'),
-        ('medium_square_crop', 'crop__125x125'),
+        ('medium_square_crop', 'crop__150x150'),
         ('small_square_crop', 'crop__100x100'),
     ])
     class Meta:
