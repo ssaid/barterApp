@@ -3,5 +3,8 @@
 export type Category = {
   id: number;
   name: string;
-  img: string;
+  image: string | null;
+  icon: string | null;
+  slug: string | null;
+  parent: Category | null;
 }

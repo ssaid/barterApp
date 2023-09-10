@@ -1,4 +1,5 @@
 import { api } from "../../../api/api";
+import { Category } from "../../../types/category";
 import { Post } from "../../../types/post";
 
 
@@ -11,6 +12,11 @@ export const uploadPostImage = async(image: {post: number, image:File}) =>
 
 export const getMyPosts = async() => {
   const { data } = await api.get<Post[]>("/myposts/");
+  return data;
+}
+
+export const getCategories = async() => {
+  const { data } = await api.get<Category[]>("/categories/");
   return data;
 }
 

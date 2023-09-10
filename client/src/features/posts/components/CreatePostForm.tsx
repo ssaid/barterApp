@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip } from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip, Spinner } from "@nextui-org/react";
 import { Post, Category } from '../../../types/post';
 import { DragAndDropFiles } from './DragAndDropFiles';
 import { ImageUploadPreview } from './ImageUploadPreview';
@@ -28,14 +28,9 @@ const validationSchema = Yup.object({
 
 export const CreatePostForm = () => {
 
-  const post_categories: Category[] = [
-    { id: 1, name: 'Arte' },
-    { id: 2, name: 'Automoviles' },
-    { id: 3, name: 'Indumentaria' }
-  ]
+  const { postMutation, createPost, imagesMutation, categories } = usePosts();
 
-
-  const { postMutation, createPost, imagesMutation } = usePosts();
+  if (categories.isLoading) return <Spinner />
 
 
   return (
@@ -83,7 +78,7 @@ export const CreatePostForm = () => {
                       ({ field, form, meta }) =>
                         <Select
                           label="Categorias"
-                          items={post_categories}
+                          items={categories.data}
                           selectionMode="multiple"
                           placeholder="Selecciona una o mas categorias"
                           color={meta.touched && meta.error ? "danger" : "default"}

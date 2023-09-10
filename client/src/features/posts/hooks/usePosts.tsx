@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import * as service from "../services"
 import { Post } from "../../../types/post"
 import { Navigate, useNavigate } from "react-router-dom"
@@ -8,6 +8,11 @@ import { useEffect } from "react"
 
 
 export const usePosts = () => {
+
+  const categories = useQuery(
+    ['categories'],
+    service.getCategories
+  )
 
   const postMutation = useMutation(
     service.createPost
@@ -41,6 +46,7 @@ export const usePosts = () => {
   return {
     postMutation,
     imagesMutation,
-    createPost
+    createPost,
+    categories
   }
 }
