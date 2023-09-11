@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from trade.models import UserInformation, Post, Image, ContactMethod, Category
+from trade.models import UserInformation, Post, Image, ContactMethod, Category, Like
 from cities.models import Country, Region
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
@@ -103,3 +103,10 @@ class PostSerializerCustom(serializers.ModelSerializer):
         model = Post
         fields = "__all__"
         read_only_fields = ['id', 'user']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'like_count']
+        read_only_fields = ['id', 'like_count']

@@ -1,5 +1,6 @@
 from rest_framework import viewsets, permissions, generics, status, pagination
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
 import django_filters.rest_framework
@@ -10,7 +11,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from trade.models import UserInformation, Post, Country, ContactMethod, Category
+from trade.models import UserInformation, Post, Country, ContactMethod, Category, Like
 from cities.models import Region
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
@@ -148,3 +149,52 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         return Post.objects.prefetch_related('images', 'categories').all()
 
+    def get_permissions(self):
+        # If accessing the like or unlike actions, require authentication
+        if self.action in ['like', 'unlike']:
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            permission_classes = [permissions.AllowAny]
+        return [permission() for permission in permission_classes]
+
+    @action(detail=True, methods=['POST'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        
+        # Check if user already liked the post
+        like = Like.objects.filter(post=post, user=request.user)
+        if like.exists():
+            return Response({'detail': 'You have already liked this post.'}, status=400)
+        
+        # Create like object
+        Like.objects.create(post=post, user=request.user)
+        return Response({'detail': 'Post liked successfully.'})
+
+    @action(detail=True, methods=['POST'])
+    def unlike(self, request, pk=None):
+        post = self.get_object()
+
+        # Check if user liked the post
+        like = Like.objects.filter(post=post, user=request.user)
+        if not like.exists():
+            return Response({'detail': 'You have not liked this post yet.'}, status=400)
+
+        # Remove like
+        [l.delete() for l in like]
+        return Response({'detail': 'Post unliked successfully.'})
+
+# class LikeView(viewsets.ModelViewSet):
+#     queryset = Like.objects.all()
+#     serializer_class = PostSerializer
+#     permission_classes = [ permissions.IsAuthenticated ]
+
+#     def get_queryset(self):
+#         return Like.objects.filter(user=self.request.user).prefetch_related('post').all()
+
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
+
+#     def get_serializer_class(self):
+#         if self.action in ('list', 'retrieve', 'delete'):
+#             return PostSerializer
+#         return PostSerializerCustom

@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 import math
 from versatileimagefield.fields import VersatileImageField
 from django.utils.text import slugify
+from django.db.models import F
 
 
 # User = get_user_model()
@@ -136,12 +137,31 @@ class Post(models.Model):
     user = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     state = models.CharField(max_length=50, choices=[('draft', 'Inactiva'), ('active', 'Activa'), ('done', 'Finalizada')], default='draft')
     interactions = models.PositiveIntegerField(default=0)
-    likes = models.PositiveIntegerField(default=0)
+    like_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta: 
         ordering = ['-created_at']
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'post']
+
+    def save(self, *args, **kwargs):
+        is_new = not self.pk
+        super(Like, self).save(*args, **kwargs)
+        if is_new:
+            Post.objects.filter(pk=self.post.pk).update(like_count=F('like_count') + 1)
+
+    def delete(self, *args, **kwargs):
+        super(Like, self).delete(*args, **kwargs)
+        Post.objects.filter(pk=self.post.pk).update(like_count=F('like_count') - 1)
 
 
 class Image(models.Model):
