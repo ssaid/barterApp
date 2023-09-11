@@ -5,7 +5,7 @@ export const CategorySkeleton = () => {
   return (
     <Card 
       radius="sm"
-      className="h-[150px] w-[150px] relative shrink-0 border border-default-200"
+      className="h-[100px] w-[100px] sm:h-[150px] sm:w-[150px] relative shrink-0 border border-default-200"
     >
       <div className="flex items-end justify-center h-full p-5">
         <Skeleton className="w-4/5 rounded-md h-5">

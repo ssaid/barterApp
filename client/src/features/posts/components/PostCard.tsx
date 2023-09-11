@@ -1,7 +1,6 @@
-import { AiFillEye, AiFillHeart } from "react-icons/ai";
-import { IconWrapperWithCounter } from "../../../components/IconWraperWithCounter";
+import { AiFillHeart } from "react-icons/ai";
 import { Image as ImageType, Post } from "../../../types/post"
-import {Button, Card, CardBody, CardFooter, CardHeader, Image} from "@nextui-org/react";
+import {Button, Card, CardBody, CardHeader, Image} from "@nextui-org/react";
 import { useState } from "react";
 
 

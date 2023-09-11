@@ -1,7 +1,19 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Textarea, Chip, Spinner } from "@nextui-org/react";
-import { Post, Category } from '../../../types/post';
+import { Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Input,
+  Button,
+  Divider,
+  Select,
+  SelectItem,
+  Textarea,
+  Chip,
+  Spinner 
+} from "@nextui-org/react";
+import { Post } from '../../../types/post';
 import { DragAndDropFiles } from './DragAndDropFiles';
 import { ImageUploadPreview } from './ImageUploadPreview';
 import { useMemo } from 'react';
@@ -128,6 +140,7 @@ export const CreatePostForm = () => {
                           key={idx}
                           img={image}
                           onClick={() =>
+                            //@ts-ignore
                             formik.setFieldValue('images', [...formik.values.images.filter((_, i: number) => i !== idx)]) 
                           }
                         />
