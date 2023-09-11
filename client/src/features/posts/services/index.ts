@@ -1,6 +1,6 @@
 import { api } from "../../../api/api";
 import { Category } from "../../../types/category";
-import { Post } from "../../../types/post";
+import { PaginatedPostResponse, Post } from "../../../types/post";
 
 
 export const createPost = async(post: Post) => 
@@ -22,3 +22,9 @@ export const getCategories = async() => {
 
 export const patchPost = async(post: Partial<Post>) => 
   await api.patch<Post>(`/myposts/${post.id}/`, post);
+
+export const getPaginatedPosts = async({ pageParam = '/posts/?limit=1' }) => {
+
+  const { data } = await api.get<PaginatedPostResponse>(pageParam);
+  return data;
+}

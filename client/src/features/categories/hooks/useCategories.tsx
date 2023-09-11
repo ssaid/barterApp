@@ -6,7 +6,11 @@ export const useCategories = () => {
 
   const categories = useQuery(
     ['categories'],
-    service.getCategories
+    service.getCategories,
+    {
+      staleTime: 1000 * 60 * 5,
+      cacheTime: 1000 * 60 * 5
+    }
   )
 
   return {

@@ -13,11 +13,18 @@ export const CategoryCard = ({ category }: Props) => {
 
   const navigate = useNavigate()
 
+  const handleNavigate = () => {
+    const params = new URLSearchParams()
+    params.append('category', category.slug)
+
+    navigate({ search: params.toString() })
+  }
+
   return (
     <Card
       isFooterBlurred
       isPressable
-      onPress={() => navigate(`/${category.slug}`)}
+      onPress={handleNavigate}
       radius="sm"
       className="h-[100px] w-[100px] sm:h-[150px] sm:w-[150px] relative shrink-0"
     >

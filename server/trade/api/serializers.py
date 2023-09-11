@@ -71,7 +71,8 @@ class ImageSerializer(serializers.ModelSerializer):
     image = VersatileImageFieldSerializer(
         sizes=[
             ('full_size', 'url'),
-            ('thumbnail', 'thumbnail__100x100'),
+            ('thumbnail', 'thumbnail__350x350'),
+            ('large_square_crop', 'crop__350x350'),
             ('medium_square_crop', 'crop__125x125'),
             ('small_square_crop', 'crop__100x100'),
         ]

@@ -1,8 +1,5 @@
-from rest_framework import viewsets
-from rest_framework import generics
+from rest_framework import viewsets, permissions, generics, status, pagination
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
 import django_filters.rest_framework
@@ -144,6 +141,7 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.prefetch_related('images', 'categories').all()
     serializer_class = PostSerializer
     permission_classes = [ permissions.AllowAny ]
+    pagination_class = pagination.LimitOffsetPagination
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_class = PostFilter
 
