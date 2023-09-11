@@ -5,6 +5,10 @@ from rest_framework import status
 from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
+import django_filters.rest_framework
+import django_filters
+from django_filters import rest_framework as filters
+from django.db import models
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -125,7 +129,24 @@ class MyPostViewSet(viewsets.ModelViewSet):
             return PostSerializer
         return PostSerializerCustom
 
+class PostFilter(django_filters.FilterSet):
+    class Meta:
+        model = Post
+        fields = []
+
+    category = filters.CharFilter(field_name='categories__slug', lookup_expr='exact', label='Category slug')
+    search = filters.CharFilter(method='search_filter', label='By name & description')
+
+    def search_filter(self, queryset, name, value):
+        return queryset.filter(models.Q(title__icontains=value) | models.Q(description__icontains=value))
+
 class AllPostView(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.prefetch_related('images', 'categories').all()
     serializer_class = PostSerializer
     permission_classes = [ permissions.AllowAny ]
+    # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_class = PostFilter
+
+    def get_queryset(self):
+        return Post.objects.prefetch_related('images', 'categories').all()
+
