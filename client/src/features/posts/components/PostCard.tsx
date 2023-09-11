@@ -14,23 +14,24 @@ export const PostCard = ( { post }: Props ) => {
 
 
   return (
-    <Card className="py-4 mx-2 max-w-96 relative">
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-        <p className="text-tiny uppercase font-bold">Daily Mix</p>
-        <small className="text-default-500">12 Tracks</small>
-        <h4 className="font-bold text-large">Frontend Radio</h4>
+    <Card className="py-4 max-w-xs relative w-full">
+      <CardHeader className="py-2 px-4 flex-col items-start gap-1">
+        <h4 className="font-bold text-large">{ post.title }</h4>
+        <p className="text-tiny uppercase font-bold truncate max-w-[100%]">{ post.description }</p>
         <Button 
           isIconOnly
           variant="light"
-          className="absolute top-0 right-0 z-10"
+          className="absolute top-0 right-0 z-10 m-1"
           onClick={() => setLike(!like)}
         >
           <AiFillHeart 
-            className={ `text-lg ${ like ? 'text-danger' : '' }` }
+            className={ `text-xl ${ like ? 'text-danger' : '' }` }
           />
         </Button>
       </CardHeader>
-      <CardBody className="overflow-visible py-2">
+      <CardBody 
+        className="overflow-visible p-4"
+      >
         <Image
           shadow="sm"
           radius="lg"

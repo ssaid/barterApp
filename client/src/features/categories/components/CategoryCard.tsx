@@ -26,7 +26,7 @@ export const CategoryCard = ({ category }: Props) => {
       isPressable
       onPress={handleNavigate}
       radius="sm"
-      className="h-[100px] w-[100px] sm:h-[150px] sm:w-[150px] relative shrink-0"
+      className="h-[125px] w-[125px] sm:h-[150px] sm:w-[150px] relative shrink-0"
     >
       <Image
         alt={category.name}
@@ -40,7 +40,7 @@ export const CategoryCard = ({ category }: Props) => {
         <CardFooter
           className="absolute flex justify-center items-end w-full h-full z-20 backdrop-blur-0"
         >
-          <p className="text-white font-semibold z-20">{category.name}</p>
+          <p className="text-white font-semibold z-20 shrink">{category.name}</p>
         </CardFooter>
     </Card>
 

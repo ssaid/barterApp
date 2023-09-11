@@ -9,7 +9,7 @@ export const CategoriesList = () => {
   const { categories } = useCategories()
 
   if (categories.isLoading) return (
-    <div className="flex gap-2 m-w-screen overflow-auto p-2">
+    <div className="flex gap-2 w-fit max-w-full mx-auto overflow-auto p-2">
       {
         Array.from({ length: 6 }).map((_, index) => <CategorySkeleton key={index} />)
       }
@@ -17,7 +17,7 @@ export const CategoriesList = () => {
   )
 
   return (
-    <div className="flex gap-2 m-w-screen overflow-auto p-2">
+    <div className="flex gap-2 w-fit max-w-full mx-auto overflow-auto p-2">
       {
         categories.data.map(category => 
           <CategoryCard key={category.id} category={category} />
