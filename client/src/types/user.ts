@@ -15,6 +15,7 @@ export type User = UserBase & {
 
 export type UserInformation = {
   country: string,
+  coords: { latitude: number, longitude: number },
   state: string,
   city: string,
   contact_methods: ContactMethod[],

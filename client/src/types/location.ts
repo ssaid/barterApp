@@ -17,7 +17,7 @@ export type Point = {
 }
 
 export type Location = {
-  city_name: string,
-  region_id: string,
-  country_id: string,
+  city: string,
+  region: string,
+  country: string,
 }

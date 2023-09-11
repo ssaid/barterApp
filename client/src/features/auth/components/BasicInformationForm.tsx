@@ -30,7 +30,7 @@ const validationSchema = Yup.object({
 
 export const BasicInformationForm = () => {
 
-  const {countries, states, location, loading} = useFormInfo()
+  const {location, loading} = useFormInfo()
 
   const methods = [
     {
@@ -48,8 +48,11 @@ export const BasicInformationForm = () => {
   if (loading) return <BasicInformationFormSkeleton />
 
 
-  const initialValues: Partial<UserInformation> = {
-    country: countries.data[0].id,
+  const initialValues: UserInformation = {
+    country: '',
+    state: '',
+    city: '',
+    coords: { latitude: 0, longitude: 0 },
     contact_methods: [
       { method: '', value: '' }
     ]
@@ -61,7 +64,7 @@ export const BasicInformationForm = () => {
       <Divider className='my-3'/>
       <Formik
         initialValues={initialValues}
-        onSubmit={console.log}
+        onSubmit={values => console.log(values)}
         validationSchema={validationSchema}
       >
         {
@@ -73,13 +76,14 @@ export const BasicInformationForm = () => {
                   const { latitude, longitude } = coords;
                   const data = await location.mutateAsync({ latitude, longitude })
                   if (data) {
-                    const { city_name, region_id, country_id } = data
+                    const { city, region: state, country } = data
                     
                     formik.setValues({
                       ...formik.values,
-                      city: city_name,
-                      state: region_id,
-                      country: country_id
+                      city,
+                      state,
+                      country,
+                      coords: { latitude, longitude }
                     })
                   }
                 }
@@ -90,87 +94,56 @@ export const BasicInformationForm = () => {
             return (
               <>
                 <CardBody className='flex flex-col gap-3'>
-                  <p>Ubicacion</p>
+                  <div className='flex justify-between items-end'>
+                    <p>Ubicacion</p>
+                    <Button 
+                      className="bg-default/50 hover:bg-default/80 text-foreground cursor-pointer"
+                      onClick={handleLocation}
+                      isDisabled={location.isLoading}
+                    >
+                      Obtener Ubicacion
+                      {
+                        location.isLoading
+                          ? <Spinner size='sm' color="current" />
+                          : <MdPlace className="text-lg" />
+                      }
+                    </Button>
+                  </div>
                   <Divider />
                   <Field 
-                    as={Select}
+                    as={Input}
+                    isDisabled
                     variant="bordered"
                     label="Pais" 
                     name="country" 
-                    defaultSelectedKeys={formik.values.country ? [formik.values.country] : []}
+                    value={formik.values.country}
                     color={formik.touched.country && formik.errors.country ? "danger" : ""}
                     validationState={formik.touched.country && formik.errors.country ? "error" : ""}
                     errorMessage={formik.touched.country && formik.errors.country && formik.errors.country}
-                  >
-                    {
-                      countries.data.map( c => 
-                        <SelectItem 
-                          key={c.id} 
-                          value={c.id} 
-                          startContent={
-                            <Avatar 
-                              alt={c.name}
-                              className="w-6 h-6" 
-                              src={`https://flagcdn.com/${c.code.toLowerCase()}.svg`}
-                            />
-                          }
-                        >
-                          { c.name }
-                        </SelectItem>
-                      )
-                    }
-                  </Field>
-
-                  <Field 
-                    as={Select}
-                    variant="bordered"
-                    name="state" 
-                    color={formik.touched.state && formik.errors.state ? "danger" : ""}
-                    label="Provincia" 
-                    selectedKeys={formik.values.state ? [formik.values.state] : []}
-                    onChange={ e => formik.setFieldValue('state', e.target.value) }
-                    validationState={formik.touched.state && formik.errors.state ? "error" : ""}
-                    // onClose={() => formik.setFieldTouched('state', true)}
-                    errorMessage={formik.touched.state && formik.errors.state && formik.errors.state}
-                  >
-                    {
-                      states.data.map( s => 
-                        <SelectItem 
-                          key={s.id} 
-                          value={s.name} 
-                        >
-
-                          { s.name }
-                        </SelectItem>
-                      )
-                    }
-                  </Field>
+                  />
 
                   <Field 
                     as={Input}
                     variant="bordered"
+                    isDisabled
+                    name="state" 
+                    value={formik.values.state}
+                    color={formik.touched.state && formik.errors.state ? "danger" : ""}
+                    label="Provincia" 
+                    validationState={formik.touched.state && formik.errors.state ? "error" : ""}
+                    errorMessage={formik.touched.state && formik.errors.state && formik.errors.state}
+                  />
+
+                  <Field 
+                    as={Input}
+                    isDisabled
+                    variant="bordered"
+                    value={formik.values.city}
                     name="city" 
                     label="Ciudad" 
                     color={formik.touched.city && formik.errors.city ? "danger" : ""}
                     validationState={formik.touched.city && formik.errors.city}
                     errorMessage={formik.touched.city && formik.errors.city && formik.errors.city}
-                    description={
-                      <p className='text-end'>Podes obtener tu ubicacion automaticamente</p>
-                    }
-                    de
-                    endContent={
-                      <Button 
-                        isIconOnly
-                        className="bg-default/50 hover:bg-default/80 text-foreground cursor-pointer"
-                        onClick={handleLocation}
-                      >
-                        {
-                          location.isLoading
-                          ? <Spinner size='sm' color="current" />
-                          : <MdPlace className="text-lg" />
-                        }
-                      </Button>
-                    }
                   />
 
                   <p>Metodos de contacto</p>
@@ -258,7 +231,12 @@ export const BasicInformationForm = () => {
                   </FieldArray>
                 </CardBody>
                 <CardFooter className="justify-end px-5">
-                  <Button variant="solid" color="primary" type="submit">
+                  <Button 
+                    variant="solid" 
+                    color="primary" 
+                    type="submit" 
+                    onClick={() => formik.handleSubmit()}
+                  >
                     Guardar
                   </Button>
                 </CardFooter>

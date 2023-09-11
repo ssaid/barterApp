@@ -73,15 +73,10 @@ class UserInformation(models.Model):
 
         dd = {}
         if nearest_city:
-            city_str = f"Nearest city: {nearest_city.name} (Distance: {min_distance:.2f} km)"
-            city_name = nearest_city.name
-            region_name = nearest_city.region.name
             dd = {
-                'city_str': city_str,
-                'city_name': nearest_city.name,
-                'region_id': str(nearest_city.region.id),
-                'country_id': str(nearest_city.country.id),
-                # 'city': nearest_city,
+                'city': nearest_city.name,
+                'region': nearest_city.region.name,
+                'country': nearest_city.country.name,
             }
         return dd
 
