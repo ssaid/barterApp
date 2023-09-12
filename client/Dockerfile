@@ -10,6 +10,10 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
+ARG VITE_API_URL
+ENV VITE_API_URL ${VITE_API_URL}
+ARG VITE_GOOGLE_ANALYTICS_ID
+ENV VITE_GOOGLE_ANALYTICS_ID ${VITE_GOOGLE_ANALYTICS_ID}
 RUN yarn build
 # Runtime Production
 FROM nginx:1.25.2-alpine as production-runtime
