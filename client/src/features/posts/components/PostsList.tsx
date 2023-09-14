@@ -1,7 +1,8 @@
-import { Spinner } from "@nextui-org/react"
+import { Card, CardBody, Spinner } from "@nextui-org/react"
 import { usePaginatedPosts } from "../hooks/usePaginatedPosts"
 import { PostCard } from "./PostCard"
 import { PostCardSkeleton } from "./PostCardSkeleton"
+import { BiSolidInvader } from "react-icons/bi"
 
 
 
@@ -17,6 +18,17 @@ export const PostsList = () => {
       }
     </div>
 
+  )
+
+  if (query.data.pages[0].results.length === 0) return (
+  <div className="flex justify-center w-full p-2 absolute top-1/2 left-0">
+    <Card className="w-full">
+      <CardBody>
+        <p className="text-center">Ups. al parecer no hay nada aqui 👾
+        </p>
+      </CardBody>
+    </Card>
+  </div>
   )
 
   const PAGE_SIZE = 30
