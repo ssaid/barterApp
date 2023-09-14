@@ -1,8 +1,8 @@
-import { Card, CardBody, Spinner } from "@nextui-org/react"
+import { Spinner } from "@nextui-org/react"
 import { usePaginatedPosts } from "../hooks/usePaginatedPosts"
 import { PostCard } from "./PostCard"
 import { PostCardSkeleton } from "./PostCardSkeleton"
-import { BiSolidInvader } from "react-icons/bi"
+import { EmptyRequestCard } from "../../../components/EmptyRequestCard"
 
 
 
@@ -12,24 +12,17 @@ export const PostsList = () => {
 
   if (query.isLoading) return (
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center gap-4 m-5 container-xl">
-      {
-        Array.from({ length: 10 }).map((_, index) => <PostCardSkeleton key={index} />)
-      }
+    <div className="container mx-auto m-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center gap-4">
+        {
+          Array.from({ length: 10 }).map((_, index) => <PostCardSkeleton key={index} />)
+        }
+      </div>
     </div>
 
   )
 
-  if (query.data.pages[0].results.length === 0) return (
-  <div className="flex justify-center w-full p-2 absolute top-1/2 left-0">
-    <Card className="w-full">
-      <CardBody>
-        <p className="text-center">Ups. al parecer no hay nada aqui 👾
-        </p>
-      </CardBody>
-    </Card>
-  </div>
-  )
+  if (query.data.pages[0].results.length === 0) return <EmptyRequestCard />
 
   const PAGE_SIZE = 30
 

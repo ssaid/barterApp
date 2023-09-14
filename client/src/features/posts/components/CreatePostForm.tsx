@@ -19,6 +19,7 @@ import { ImageUploadPreview } from './ImageUploadPreview';
 import { useMemo } from 'react';
 import { usePosts } from '../hooks/usePosts';
 import { parseError } from '../../../utils/parseError';
+import { LoadingWithBackdrop } from '../../../components/LoadingWithBackdrop';
 
 const initialValues: Post = {
   title: '',
@@ -42,7 +43,8 @@ export const CreatePostForm = () => {
 
   const { postMutation, createPost, imagesMutation, categories } = usePosts();
 
-  if (categories.isLoading) return <Spinner />
+  if (categories.isLoading) return <LoadingWithBackdrop />
+
 
 
   return (
