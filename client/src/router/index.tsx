@@ -12,6 +12,7 @@ import { Logout } from "../pages/Logout";
 import { PrivateRoutes } from "../components/PrivateRoutes";
 import { PublicRoutes } from "../components/PublicRoutes";
 import { MyPosts } from "../pages/MyPosts";
+import { Fallback } from "../pages/Fallback";
 
 
 export const router = createBrowserRouter([
@@ -40,6 +41,6 @@ export const router = createBrowserRouter([
       },
       { path: "user/logout", element: <Logout /> },
     ],
-    // errorElement: <ErrorView />,
+    errorElement: <Fallback />,
   },
 ]);
