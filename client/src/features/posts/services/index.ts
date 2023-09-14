@@ -23,7 +23,7 @@ export const getCategories = async() => {
 export const patchPost = async(post: Partial<Post>) => 
   await api.patch<Post>(`/myposts/${post.id}/`, post);
 
-export const getPaginatedPosts = async({ pageParam = '/posts/?limit=1' }) => {
+export const getPaginatedPosts = async({ pageParam = '/posts/?limit=30' }) => {
 
   const { data } = await api.get<PaginatedPostResponse>(pageParam);
   return data;
