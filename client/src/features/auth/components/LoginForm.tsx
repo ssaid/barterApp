@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { parseError } from '../../../utils/parseError';
 import { AuthContext } from '../../../context/auth';
+import { api } from '../../../api/api';
 
 const initialValues: UserBase = {
   email: '',
@@ -41,6 +42,13 @@ export const LoginForm = () => {
       handleLogin({ token: login.data.data.access })
       localStorage.setItem('token', login.data.data.access)
       localStorage.setItem('refresh_token', login.data.data.refresh)
+
+      api.interceptors.request.use(
+        config => {
+          config.headers['Authorization'] = `Bearer ${login.data.data.access}`
+          return config
+        },
+      )
       navigate('/')
 
     }
