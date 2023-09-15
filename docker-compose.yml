@@ -12,12 +12,10 @@ services:
       - VITE_BASE_API_URL=https://localhost:8000/api/v1
   db:
     image: postgis/postgis:15-3.4
-    ports:
-      - 5432:5432
     volumes:
       - postgis_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=icdb
+      - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   server:
@@ -30,7 +28,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=icdb
+      - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - DJANGO_CONFIGURATION=Dev
