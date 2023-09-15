@@ -3,6 +3,7 @@ import * as service from "../services"
 import { Post } from "../../../types/post"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
+import Compressor from "compressorjs"
 
 
 
@@ -31,9 +32,20 @@ export const usePosts = () => {
       const { id } = data
 
       values.images.forEach(image => {
-        imagesMutation.mutate({ image, post: id })
-      })
+        new Compressor(image, {
+          quality: 0.8,
+          maxWidth: 600,
+          maxHeight: 600,
+          mimeType: 'image/jpeg',
+          success: compressedImage => {
+            const fileName = `ityaimg_${Date.now()}.jpg`;
+            const blob = new Blob([compressedImage], { type: 'image/jpeg' });
+            const file = new File([blob], fileName, { type: 'image/jpeg' });
+            imagesMutation.mutate({ image: file, post: id })
+          }
+        })
 
+      })
     }
   }
 
