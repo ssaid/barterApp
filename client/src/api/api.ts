@@ -6,13 +6,15 @@ export const api = axios.create({
 })
 
 
+if (localStorage.getItem('token')) {
+  api.interceptors.request.use(
+    config => {
+      config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+      return config
+    },
+  )
+}
 
-api.interceptors.request.use(
-  config => {
-    config.headers['Authorization'] = `Bearer ${localStorage.getItem('token') ?? ''}`
-    return config
-  },
-)
 
 
 api.interceptors.response.use(
