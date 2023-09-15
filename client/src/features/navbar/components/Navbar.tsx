@@ -28,7 +28,7 @@ export const Navbar = () => {
         <Link to='/' className="font-bold text-inherit">LOGO</Link>
       </NavbarBrand>
       <NavbarContent justify="center">
-        <SearchBar />
+        { location.pathname === '/' && <SearchBar /> }
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>

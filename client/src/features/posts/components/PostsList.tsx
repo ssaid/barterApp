@@ -4,11 +4,14 @@ import { PostCard } from "./PostCard"
 import { PostCardSkeleton } from "./PostCardSkeleton"
 import { EmptyRequestCard } from "../../../components/EmptyRequestCard"
 
+type Props = {
+  category: string
+  search: string
+}
 
+export const PostsList = (props: Props) => {
 
-export const PostsList = () => {
-
-  const { query } = usePaginatedPosts()
+  const { query } = usePaginatedPosts(props)
 
   if (query.isLoading) return (
 

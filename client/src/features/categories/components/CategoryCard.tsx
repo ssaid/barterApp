@@ -1,6 +1,6 @@
 import { Card, CardFooter, Image } from "@nextui-org/react";
 import { Category } from "../../../types/category";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -12,12 +12,16 @@ type Props = {
 export const CategoryCard = ({ category }: Props) => {
 
   const navigate = useNavigate()
+  const location = useLocation()
 
   const handleNavigate = () => {
     const params = new URLSearchParams()
     params.append('category', category.slug)
 
-    navigate({ search: params.toString() })
+    const search = new URLSearchParams(location.search).get('search')
+    if (search) params.append('search', search)
+
+    navigate({pathname: '/', search: params.toString()})
   }
 
   return (
