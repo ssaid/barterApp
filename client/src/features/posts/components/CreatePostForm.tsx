@@ -154,11 +154,11 @@ export const CreatePostForm = () => {
                     Crear
                   </Button>
                 </CardFooter>
-                <div className='relative bottom-0 h-5 -mb-5 mt-4'>
-                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${postMutation.isError ? '' : 'translate-y-9'} `} >
+                <div className='relative bottom-0 sm:h-5 h-12 -mb-5 mt-4'>
+                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${postMutation.isError ? '' : 'translate-y-20 '} `} >
                     {parseError(postMutation.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
                   </p>
-                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${imagesMutation.isError ? '' : 'translate-y-9'} `} >
+                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${imagesMutation.isError ? '' : 'translate-y-20'} `} >
                     {parseError(imagesMutation.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
                   </p>
                 </div>
