@@ -4,19 +4,29 @@ import { useNavigate } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
 import { HiPencilSquare } from "react-icons/hi2";
 import { BiBookAdd } from "react-icons/bi";
-import { BsCardList } from "react-icons/bs";
+import { BsCardList, BsFillSunFill, BsMoonStarsFill } from "react-icons/bs";
 import { RiAccountCircleFill } from "react-icons/ri";
 
 import { IconWrapper } from "../../../components/IconWrapper"; 
+import { useTheme } from "../../../hooks/useTheme";
 
 export const UserOptions = () => {
 
   const navigate = useNavigate()
 
+  const { mode, handleToggle } = useTheme()
+
+  const handleClick = (key: string) => {
+
+    if ( key === 'change-theme' ) return handleToggle()
+
+    navigate(key)
+  }
+
   return (
     <Listbox
       aria-label="User Menu"
-      onAction={navigate}
+      onAction={handleClick}
       className="p-0 gap-0 min-w-unit-8 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
       itemClasses={{
         base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
@@ -65,6 +75,23 @@ export const UserOptions = () => {
         }
       >
         Editar Perfil
+      </ListboxItem>
+      <ListboxItem
+        key="change-theme"
+        className="text-end"
+        endContent={
+          <IconWrapper className="bg-default-400/10 text-primary">
+            {
+              mode === 'light'
+                ? <BsFillSunFill color="#fbbf24"/>
+                : <BsMoonStarsFill color={'#b5afaa'} /> 
+            }
+          </IconWrapper>
+        }
+      >
+        {
+          mode === 'light' ? 'Modo Claro' : 'Modo Oscuro'
+        }
       </ListboxItem>
       <ListboxItem
         key="user/logout"

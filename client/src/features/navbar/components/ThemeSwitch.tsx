@@ -1,37 +1,17 @@
-import { useEffect, useState } from "react";
-import {MoonIcon} from "./MoonIcon";
-import {SunIcon} from "./SunIcon";
 import { Button } from "@nextui-org/react";
+import { useTheme } from "../../../hooks/useTheme";
+import { BsFillSunFill, BsMoonStarsFill } from "react-icons/bs";
 
 export const ThemeSwitch = () => {
   
-  
-  const [mode, setMode] = useState<'light' | 'dark'>(
-    localStorage.theme === 'light' ? 'light' : 'dark'
-  );
-
-  const handleClick = () => {
-    setMode( mode => mode === 'light' ? 'dark' : 'light' )
-  }
-
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-
-    root.classList.remove(mode == 'dark' ? 'light' : 'dark');
-    root.classList.add(mode);
-
-    localStorage.setItem("theme", mode);
-
-  }, [mode]);
+  const { mode, handleToggle } = useTheme()
 
   return (
-    <Button isIconOnly variant="light" onClick={handleClick}>
+    <Button isIconOnly variant="light" onClick={handleToggle}>
       {
         mode === 'light'
-          ? <SunIcon />
-          : <MoonIcon />
-
+          ? <BsMoonStarsFill color={'#b5afaa'} /> 
+          : <BsFillSunFill color="#fbbf24"/>
       }
     </Button>
     

@@ -9,7 +9,6 @@ import {
   PopoverTrigger,
   PopoverContent
 } from "@nextui-org/react";
-import { ThemeSwitch } from "./ThemeSwitch";
 import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../../context/auth";
@@ -23,7 +22,13 @@ export const Navbar = () => {
   const auth = useContext(AuthContext);
 
   return (
-    <NavBarNUI shouldHideOnScroll maxWidth="full">
+    <NavBarNUI 
+      shouldHideOnScroll 
+      maxWidth="full"
+      classNames={{
+        wrapper: 'px-3',
+      }}
+    >
       <NavbarBrand>
         <Link to='/' className="font-bold text-inherit">LOGO</Link>
       </NavbarBrand>
@@ -31,9 +36,6 @@ export const Navbar = () => {
         { location.pathname === '/' && <SearchBar /> }
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem>
-          <ThemeSwitch />
-        </NavbarItem>
         {
           !auth.signed && (
             <>

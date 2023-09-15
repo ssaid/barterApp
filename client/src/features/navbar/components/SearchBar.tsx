@@ -36,7 +36,7 @@ export const SearchBar = () => {
   return (
     <Input
       isClearable
-      className="max-w-[150px] sm:max-w-[340px]"
+      className="max-w-[90%] sm:max-w-[340px]"
       variant="faded"
       onChange={handleChange}
       onClear={handleClear}
