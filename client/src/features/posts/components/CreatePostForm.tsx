@@ -11,7 +11,6 @@ import { Card,
   SelectItem,
   Textarea,
   Chip,
-  Spinner 
 } from "@nextui-org/react";
 import { Post } from '../../../types/post';
 import { DragAndDropFiles } from './DragAndDropFiles';
