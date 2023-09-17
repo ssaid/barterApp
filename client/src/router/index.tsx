@@ -1,18 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 
+import { PrivateRoutes } from "../components/PrivateRoutes";
+import { PublicRoutes } from "../components/PublicRoutes";
+
 import { App } from "../App";
+
 import {
+    Favourites,
   Home,
   Login,
   Register,
+  BasicInformation,
+  CreatePost,
+  Logout,
+  MyPosts,
+  Fallback,
+
 } from '../pages'
-import { BasicInformation } from "../pages/BasicInformation";
-import { CreatePost } from "../pages/CreatePost";
-import { Logout } from "../pages/Logout";
-import { PrivateRoutes } from "../components/PrivateRoutes";
-import { PublicRoutes } from "../components/PublicRoutes";
-import { MyPosts } from "../pages/MyPosts";
-import { Fallback } from "../pages/Fallback";
 
 
 export const router = createBrowserRouter([
@@ -28,6 +32,7 @@ export const router = createBrowserRouter([
           { path: "user/edit-profile", element: <BasicInformation /> },
           { path: "user/new-post", element: <CreatePost /> },
           { path: "user/my-posts", element: <MyPosts /> },
+          { path: "user/favourites", element: <Favourites /> },
         ]
       },
       {

@@ -27,7 +27,8 @@ const initialValues: Post = {
   images: [] as File[],
   interactions: 0,
   categories: [],
-  likes: 0
+  like_count: 0,
+  is_liked: false,
 }
 
 

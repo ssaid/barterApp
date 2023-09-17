@@ -109,7 +109,7 @@ export const WidePostCard = ({ post }: WidePostCardProps) => {
               </IconWrapperWithCounter>
               <IconWrapperWithCounter className="bg-danger/60 text-white px-2">
                 <AiFillHeart className="text-danger" />
-                {post.likes}
+                {post.like_count}
               </IconWrapperWithCounter>
             </div>
           </div>
