@@ -167,11 +167,11 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
         # Check if user already liked the post
         like = Like.objects.filter(post=post, user=request.user)
         if like.exists():
-            return Response({'detail': 'You have already liked this post.'}, status=400)
+            return Response({'likes': 'You have already liked this post.'}, status=400)
         
         # Create like object
         Like.objects.create(post=post, user=request.user)
-        return Response({'detail': 'Post liked successfully.'})
+        return Response({'likes': Like.objects.filter(post=post).count()}, status=200)
 
     @action(detail=True, methods=['POST'])
     def unlike(self, request, pk=None):
@@ -184,7 +184,7 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
 
         # Remove like
         [l.delete() for l in like]
-        return Response({'detail': 'Post unliked successfully.'})
+        return Response({'likes': Like.objects.filter(post=post).count()}, status=200)
 
 # class LikeView(viewsets.ModelViewSet):
 #     queryset = Like.objects.all()

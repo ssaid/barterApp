@@ -4,8 +4,9 @@ export type Post = {
   title: string;
   description: string;
   categories: Category[] | number[];
-  likes: number;
+  like_count: number;
   interactions: number;
+  is_liked: boolean;
   state: 'draft' | 'active' | 'done';
   images: File[] | Image[];
 }

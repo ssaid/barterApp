@@ -4,6 +4,7 @@ import {Button, Card, CardBody, CardHeader, Image} from "@nextui-org/react";
 import { MutableRefObject, memo, useEffect, useRef, useState } from "react";
 import noImage from '../../../assets/image_not_available.png'
 import { useIntersectionObserver } from "@uidotdev/usehooks";
+import { usePostCard } from "../hooks/usePostCard";
 
 
 type Props = {
@@ -14,9 +15,18 @@ type Props = {
 
 export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props ) => {
 
-  const [ like, setLike ] = useState(false)
+  const [ liked, setLiked ] = useState(post.is_liked)
+  const [ likes, setLikes ] = useState(post.like_count)
 
   const didFetch = useRef<boolean>(false)
+
+  const { like, unlike } = usePostCard()
+
+  const toggleLike = async() => {
+    const { data } = liked ? await unlike(post.id) : await like(post.id)
+    setLiked(prev => !prev)
+    setLikes(data.likes)
+  }
 
   const [ ref, entry ] = useIntersectionObserver({
     threshold: 0,
@@ -39,14 +49,17 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
         <h4 className="font-bold text-large">{ post.title }</h4>
         <p className="text-tiny uppercase font-bold truncate max-w-[100%]">{ post.description }</p>
         <Button 
-          isIconOnly
           variant="light"
-          className="absolute top-0 right-0 z-10 m-1"
-          onClick={() => setLike(!like)}
+          className="absolute top-1 right-1 z-10 m-1 px-unit-1"
+          size="sm"
+          onClick={toggleLike}
+          endContent={
+            <AiFillHeart 
+              className={ `text-xl ${ liked ? 'text-danger' : '' }` }
+            />
+          }
         >
-          <AiFillHeart 
-            className={ `text-xl ${ like ? 'text-danger' : '' }` }
-          />
+          { likes }
         </Button>
       </CardHeader>
       <CardBody 

@@ -55,7 +55,7 @@ export const UserOptions = () => {
         Mis Posts
       </ListboxItem>
       <ListboxItem
-        key="user/favorites"
+        key="user/favourites"
         className="text-end"
         endContent={
           <IconWrapper className="bg-danger/10 text-danger">
