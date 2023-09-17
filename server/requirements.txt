@@ -15,4 +15,5 @@ drf_social_oauth2
 django-cors-headers
 django-versatileimagefield
 django-filter
-Django-Verify-Email
+# DVE is not yet released to support DRF, but the sha is working!
+Django-Verify-Email @ git+https://github.com/foo290/Django-Verify-Email@725e77a

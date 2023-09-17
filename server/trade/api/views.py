@@ -7,6 +7,7 @@ import django_filters.rest_framework
 import django_filters
 from django_filters import rest_framework as filters
 from django.db import models
+from verify_email.email_handler import _VerifyEmail
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -87,6 +88,8 @@ class UserRegistrationView(generics.CreateAPIView):
     def perform_create(self, serializer):
         instance = serializer.save()
         UserInformation.objects.create(user=instance)
+        # Send email for verification
+        _VerifyEmail().send_verification_link(self.request, inactive_user=instance)
         instance.save()
 
 
