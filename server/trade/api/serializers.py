@@ -91,6 +91,8 @@ class PostSerializer(serializers.ModelSerializer):
     is_liked = serializers.SerializerMethodField()
 
     def get_is_liked(self, obj):
+        if not self.context['request'].user.is_authenticated:
+            return False
         return Like.objects.filter(user=self.context['request'].user, post=obj).exists()
 
     class Meta:
