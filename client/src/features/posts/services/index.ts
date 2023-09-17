@@ -6,6 +6,11 @@ import { PaginatedPostResponse, Post } from "../../../types/post";
 export const createPost = async(post: Post) => 
   await api.post("/myposts/", post);
 
+export const likePost = async(id: number) => 
+  await api.post<{ likes: number }>(`/posts/${id}/like/`);
+
+export const unlikePost = async(id: number) => 
+  await api.post<{ likes: number }>(`/posts/${id}/unlike/`);
 
 export const uploadPostImage = async(image: {post: number, image:File}) => 
   await api.post("/images/", image, { headers: { "Content-Type": "multipart/form-data", } });
