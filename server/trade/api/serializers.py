@@ -88,6 +88,10 @@ class PostSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     # images = serializers.StringRelatedField(many=True, read_only=True)
     categories = CategorySerializer(many=True)
+    is_liked = serializers.SerializerMethodField()
+
+    def get_is_liked(self, obj):
+        return Like.objects.filter(user=self.context['request'].user, post=obj).exists()
 
     class Meta:
         model = Post
