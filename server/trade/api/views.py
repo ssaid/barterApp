@@ -201,3 +201,13 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
 #         if self.action in ('list', 'retrieve', 'delete'):
 #             return PostSerializer
 #         return PostSerializerCustom
+
+class FavouritesView(generics.ListAPIView):
+
+    queryset = Post.objects.prefetch_related('images', 'categories').all()
+    serializer_class = PostSerializer
+    permission_classes = [ permissions.IsAuthenticated ]
+
+    def get_queryset(self):
+        return Post.objects.filter(likes__user=self.request.user).prefetch_related('images', 'categories').all()
+

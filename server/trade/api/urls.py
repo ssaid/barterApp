@@ -2,6 +2,7 @@ from django.urls import path, include, re_path
 from rest_framework import routers
 
 from .views import (
+    FavouritesView,
     ImageUploadView,
     UserInformationDetailView,
     MyPostViewSet,
@@ -28,5 +29,6 @@ urlpatterns = [
     path('regions/', RegionView.as_view(), name='regions-list'),
     path('contactmethods/', ContactMethodView.as_view(), name='contactmethods-list'),
     path('categories/', CategoryView.as_view(), name='categories-list'),
+    path('favourites/', FavouritesView.as_view(), name='favourites-list'),
     # path('posts/my/<int:id>/', MyPostViewSet.as_view({'get': 'retrieve', 'patch': 'partial_update', 'delete': 'destroy'}), name='post-detail'),
 ] + router.urls

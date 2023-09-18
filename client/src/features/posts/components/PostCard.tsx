@@ -10,7 +10,7 @@ import { usePostCard } from "../hooks/usePostCard";
 type Props = {
   post: Post
   fetchesOnVisible?: boolean
-  fetchNextPage: () => void
+  fetchNextPage?: () => void
 }
 
 export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props ) => {
