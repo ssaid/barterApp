@@ -1,3 +1,4 @@
+import { ImageSizes } from "./category"
 
 
 export type UserBase = {
@@ -18,12 +19,18 @@ export type UserInformation = {
   coords: { latitude: number, longitude: number },
   state: string,
   city: string,
-  contact_methods: ContactMethod[],
+  contacts: ContactMethodCreate[],
+  avatar: ImageSizes | File | string,
 }
 
-
+export type ContactMethodCreate = {
+  contact_method: number,
+  contact: string,
+}
 
 export type ContactMethod = {
-  method: string,
-  value: string,
+  id: number,
+  type: string
+  name: string
+  image: string
 }

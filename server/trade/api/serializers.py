@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from trade.models import UserInformation, Post, Image, ContactMethod, Category, Like
+from trade.models import Contact, UserInformation, Post, Image, ContactMethod, Category, Like
 from cities.models import Country, Region
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
@@ -33,6 +33,9 @@ class RegionSerializer(serializers.ModelSerializer):
         fields = ["id","name"]
 
 class ContactMethodSerializer(serializers.ModelSerializer):   
+
+    type = serializers.CharField(source='get_type_display')
+
     class Meta:
         model = ContactMethod
         fields = "__all__"
@@ -44,6 +47,15 @@ class CountrySerializer(serializers.ModelSerializer):
         model = Country
         fields = ["id", "name","code"]
 
+
+class ContactMethodCreateSerializer(serializers.ModelSerializer):
+
+    contact_method = serializers.PrimaryKeyRelatedField(queryset=ContactMethod.objects.all())
+
+    class Meta:
+        model = Contact
+        exclude = ['user']
+
 class UserInformationSerializer(serializers.ModelSerializer):
     avatar = VersatileImageFieldSerializer(sizes=[
         ('full_size', 'url'),
@@ -51,6 +63,16 @@ class UserInformationSerializer(serializers.ModelSerializer):
         ('medium_square_crop', 'crop__400x400'),
         ('small_square_crop', 'crop__50x50'),
     ])
+    contacts = ContactMethodCreateSerializer(many=True, read_only=False)
+
+    def update(self, instance, validated_data):
+        contacts = validated_data.pop('contacts')
+        instance = super().update(instance, validated_data)
+        instance.contacts.all().delete()
+        for contact in contacts:
+            Contact.objects.create(user=instance, **contact)
+        return instance
+
     class Meta:
         model = UserInformation
         fields = "__all__"
@@ -81,7 +103,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ['image', 'is_main', 'post']
+        fields = "__all__"
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -116,3 +138,19 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'like_count']
         read_only_fields = ['id', 'like_count']
+
+
+class AvatarSerializer(serializers.ModelSerializer):
+    avatar = VersatileImageFieldSerializer(
+        sizes=[
+            ('full_size', 'url'),
+            ('thumbnail', 'thumbnail__350x350'),
+            ('large_square_crop', 'crop__350x350'),
+            ('medium_square_crop', 'crop__125x125'),
+            ('small_square_crop', 'crop__100x100'),
+        ]
+    )
+
+    class Meta:
+        model = UserInformation
+        fields = ['avatar']

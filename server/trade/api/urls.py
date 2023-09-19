@@ -4,6 +4,7 @@ from rest_framework import routers
 from .views import (
     FavouritesView,
     ImageUploadView,
+    UploadAvatarView,
     UserInformationDetailView,
     MyPostViewSet,
     CountryView,
@@ -23,6 +24,7 @@ router.register(r'posts', AllPostView)
 
 urlpatterns = [
     path('users/info/', UserInformationDetailView.as_view(), name='user-info'),
+    path('users/avatar/', UploadAvatarView.as_view(), name='upload-avatar'),
     path('images/', ImageUploadView.as_view(), name='image-upload'),
     path('geo/localize/', LocationInfoView.as_view(), name='location-info'),
     path('countries/', CountryView.as_view(), name='countries-list'),

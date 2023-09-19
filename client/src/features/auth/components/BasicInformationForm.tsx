@@ -1,61 +1,70 @@
 import { Field, FieldArray, Formik } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Spinner } from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Spinner, user } from "@nextui-org/react";
 import { UserInformation } from '../../../types/user';
 import { MdAdd, MdDelete, MdPlace } from 'react-icons/md';
+import { HiOutlineExternalLink } from 'react-icons/hi';
 
-import wp_icon from '../../../assets/whatsapp_icon.png'
-import fb_icon from '../../../assets/facebook_icon.ico'
 import { useFormInfo } from '../hooks/useFormInfo';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { BasicInformationFormSkeleton } from './BasicInformationFormSkeleton';
-
-const enum MethodLabels{
-  'whatsapp'= 'Telefono',
-  'facebook'= 'Perfil',
-}
+import { ImageSizes } from '../../../types/category';
+import { useNavigate } from 'react-router-dom';
+import { ModifyAvatar } from './ModifyAvatar';
+import { useQueryClient } from '@tanstack/react-query';
 
 
 const validationSchema = Yup.object({
   country: Yup.string().required('Este campo es requerido'),
   state: Yup.string().required('Este campo es requerido'),
   city: Yup.string().required('Este campo es requerido'),
-  contact_methods: Yup.array().of( 
+  contacts: Yup.array().of( 
     Yup.object().shape({
-      method: Yup.string().required('Este campo es requerido'),
-      value: Yup.string().required('Este campo es requerido')
+      contact_method: Yup.string().required('Este campo es requerido'),
+      contact: Yup.string().required('Este campo es requerido')
     })
   ).required('Debes ingresar al menos un metodo de contacto')
 })
 
 export const BasicInformationForm = () => {
 
-  const {location, loading} = useFormInfo()
+  const [ isSaved, setIsSaved ] = useState(false)
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  const methods = [
-    {
-      value: 'whatsapp',
-      label: 'Whatsapp',
-      icon: wp_icon,
-    },
-    {
-      value: 'facebook',
-      label: 'Facebook',
-      icon: fb_icon,
-    }
-  ]
+  const {
+    location,
+    save,
+    loading,
+    c_methods,
+    user_info
+  } = useFormInfo()
 
   if (loading) return <BasicInformationFormSkeleton />
 
-
   const initialValues: UserInformation = {
-    country: '',
-    state: '',
-    city: '',
+    avatar: (user_info.data.avatar as ImageSizes).medium_square_crop ?? '',
+    country: user_info.data.country ?? '',
+    state: user_info.data.state ?? '',
+    city: user_info.data.city ?? '',
     coords: { latitude: 0, longitude: 0 },
-    contact_methods: [
-      { method: '', value: '' }
-    ]
+    contacts: user_info.data.contacts?.length 
+    ? user_info.data.contacts.map( ({ contact_method, contact }) => ({ contact_method, contact }) )
+    : [ { contact_method: undefined, contact: '' } ]
+  }
+
+
+  const handleSave = async(values: UserInformation) => {
+    const { avatar, ...data } = values
+
+    if (avatar instanceof File) data['avatar'] = avatar
+
+    const {status} = await save.mutateAsync(data)
+    if (status === 200){
+      setIsSaved( status === 200 )
+      queryClient.invalidateQueries(['user_info'])
+
+    }
   }
 
   return (
@@ -64,7 +73,7 @@ export const BasicInformationForm = () => {
       <Divider className='my-3'/>
       <Formik
         initialValues={initialValues}
-        onSubmit={values => console.log(values)}
+        onSubmit={handleSave}
         validationSchema={validationSchema}
       >
         {
@@ -90,10 +99,13 @@ export const BasicInformationForm = () => {
               )
             }, [location, formik])
 
-
             return (
               <>
                 <CardBody className='flex flex-col gap-3'>
+                  <ModifyAvatar 
+                    image={formik.values.avatar as string | File}
+                    onChange={avatar => formik.setFieldValue('avatar', avatar)}
+                  />
                   <div className='flex justify-between items-end'>
                     <p>Ubicacion</p>
                     <Button 
@@ -148,69 +160,79 @@ export const BasicInformationForm = () => {
 
                   <p>Metodos de contacto</p>
                   <Divider />
-                  <FieldArray name="contact_methods" >
+                  <FieldArray name="contacts" >
                     {
                       props => 
                         <div className='flex gap-2 flex-col'>
                           {
-                            props.form.values.contact_methods.map((_, index) => (
+                            props.form.values.contacts.map((_, index) => (
                               <div 
                                 key={index} 
                                 className='flex gap-2'
                               >
                                 <Field
-                                  name={`contact_methods.${index}.method`}
+                                  name={`contacts.${index}.contact_method`}
                                   as={Select}
                                   className='w-3/5'
                                   label="Metodo"
                                   variant="bordered"
-                                  color={formik.touched.contact_methods?.[index]?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method ? "danger" : ""}
-                                  errorMessage={formik.touched.contact_methods?.[index]?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method}
-                                  validationState={formik.touched.contact_methods?.[index]?.method && (formik.errors.contact_methods?.[index] as { method: string })?.method}
+                                  selectedKeys={
+                                    formik.values.contacts[index].contact_method
+                                      ? [formik.values.contacts[index].contact_method.toString()]
+                                      : []
+                                  }
+                                  onClose={() => formik.setFieldTouched(`contacts.${index}.contact_method`, true)}
+                                  color={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts?.[index]?.contact_method ? "danger" : "")}
+                                  errorMessage={formik.touched.contacts?.[index]?.contact_method && formik.errors.contacts?.[index]?.contact_method }
+                                  validationState={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts?.[index]?.contact_method)}
                                   classNames={{
                                     popover: 'min-w-max'
                                   }}
                                   onChange={(e) => {
-                                    formik.setFieldValue(`contact_methods.${index}.method`, e.target.value)
-                                    formik.setFieldValue(`contact_methods.${index}.value`, '')
-                                    formik.setFieldTouched(`contact_methods.${index}.value`, false)
+                                    formik.setFieldValue(`contacts.${index}.contact_method`, e.target.value)
+                                    formik.setFieldValue(`contacts.${index}.contact`, '')
+                                    formik.setFieldTouched(`contacts.${index}.contact`, false)
                                   }}
 
                                 >
                                   {
-                                    methods.map(m => 
+                                    c_methods.data?.map(m => 
                                       <SelectItem 
-                                        key={m.value} 
-                                        value={m.value} 
+                                        key={m.id} 
+                                        value={m.id} 
                                         startContent={
                                           <Avatar 
-                                            alt={m.label}
+                                            alt={m.name}
                                             className="w-6 h-6" 
-                                            src={m.icon}
+                                            src={m.image}
                                           />
                                         }
                                       >
 
-                                        { m.label }
+                                        { m.name }
                                       </SelectItem>
                                     )
                                   }
                                 </Field>
                                 <Field 
-                                  name={`contact_methods.${index}.value`}
+                                  name={`contacts.${index}.contact`}
                                   as={Input}
                                   variant="bordered"
                                   //@ts-ignore
-                                  label={MethodLabels[formik.values.contact_methods[index].method] ?? 'Contacto'}
-                                  color={formik.touched.contact_methods?.[index]?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value ? "danger" : ""}
-                                  errorMessage={formik.touched.contact_methods?.[index]?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value}
-                                  validationState={formik.touched.contact_methods?.[index]?.value && (formik.errors.contact_methods?.[index] as { value: string })?.value}
+                                  label={
+                                    c_methods.data.find(
+                                      m => m.id === formik.values.contacts[index].contact_method
+                                    )?.type ?? 'Contacto'
+                                  }
+                                  color={formik.touched.contacts?.[index]?.contact && formik.errors.contacts?.[index]?.contact ? "danger" : ""}
+                                  errorMessage={formik.touched.contacts?.[index]?.contact && formik.errors.contacts?.[index]?.contact}
+                                  validationState={formik.touched.contacts?.[index]?.contact && formik.errors.contacts?.[index]?.contact}
                                 />
                                 <Button 
                                   isIconOnly 
-                                  className={ `mt-1 ${ formik.values.contact_methods.length > 1 ? 'hover:bg-danger' : 'cursor-default' }` }
+                                  className={ `mt-1 ${ formik.values.contacts.length > 1 ? 'hover:bg-danger' : 'cursor-default' }` }
                                   size='lg'
-                                  onClick={() => formik.values.contact_methods.length > 1 && props.remove(index)}
+                                  onClick={() => formik.values.contacts.length > 1 && props.remove(index)}
                                 >
                                   <MdDelete />
                                 </Button>
@@ -220,7 +242,7 @@ export const BasicInformationForm = () => {
 
                           <div className='flex justify-end mt-5'>
                             <Button 
-                              onClick={() => props.push({method: '', value:''})} 
+                              onClick={() => props.push({contact_method: undefined, contact:''})} 
                               startContent={<MdAdd/>}
                             >
                               Agregar
@@ -231,14 +253,32 @@ export const BasicInformationForm = () => {
                   </FieldArray>
                 </CardBody>
                 <CardFooter className="justify-end px-5">
-                  <Button 
-                    variant="solid" 
-                    color="primary" 
-                    type="submit" 
-                    onClick={() => formik.handleSubmit()}
-                  >
-                    Guardar
-                  </Button>
+                  {
+                    isSaved
+                      ? 
+                      <Button 
+                        variant="solid" 
+                        color="success" 
+                        type="submit" 
+                        isLoading={save.isLoading}
+                        onClick={() => navigate('/')}
+                        endContent={
+                          <HiOutlineExternalLink />
+                        }
+                      >
+                        Guardado exitoso! volver al inicio
+                      </Button>
+                      :
+                      <Button 
+                        variant="solid" 
+                        color="primary" 
+                        type="submit" 
+                        isLoading={save.isLoading}
+                        onClick={() => formik.handleSubmit()}
+                      >
+                        Guardar
+                      </Button>
+                  }
                 </CardFooter>
               </>
             )

@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, generics, status, pagination
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
+from .serializers import AvatarSerializer, UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
 import django_filters.rest_framework
 import django_filters
 from django_filters import rest_framework as filters
@@ -186,21 +186,6 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
         [l.delete() for l in like]
         return Response({'likes': Like.objects.filter(post=post).count()}, status=200)
 
-# class LikeView(viewsets.ModelViewSet):
-#     queryset = Like.objects.all()
-#     serializer_class = PostSerializer
-#     permission_classes = [ permissions.IsAuthenticated ]
-
-#     def get_queryset(self):
-#         return Like.objects.filter(user=self.request.user).prefetch_related('post').all()
-
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
-
-#     def get_serializer_class(self):
-#         if self.action in ('list', 'retrieve', 'delete'):
-#             return PostSerializer
-#         return PostSerializerCustom
 
 class FavouritesView(generics.ListAPIView):
 
@@ -210,4 +195,16 @@ class FavouritesView(generics.ListAPIView):
 
     def get_queryset(self):
         return Post.objects.filter(likes__user=self.request.user).prefetch_related('images', 'categories').all()
+
+
+class UploadAvatarView(generics.UpdateAPIView):
+
+    queryset = UserInformation.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+    serializer_class = AvatarSerializer
+
+    def get_object(self):
+        return UserInformation.objects.get(user=self.request.user)
+    
 

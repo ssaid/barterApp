@@ -17,7 +17,11 @@ export const BasicInformationFormSkeleton = () => {
       </CardHeader>
       <Divider className='my-3'/>
       <CardBody className='flex flex-col gap-3'>
-        <Skeleton className="rounded-lg w-32 h-6" />
+        <Skeleton className="mx-auto rounded-full w-28 h-28 mb-3 sm:mb-0" />
+        <div className="flex justify-between items-center">
+          <Skeleton className="rounded-lg w-32 h-6" />
+          <Skeleton className="rounded-lg w-24 h-8" />
+        </div>
         <Divider />
         <Skeleton className='rounded-lg'>
           <Input label='skeleton'/>

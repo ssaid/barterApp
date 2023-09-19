@@ -22,6 +22,16 @@ class User(AbstractUser):
 class ContactMethod(models.Model):
     name = models.CharField(max_length=20)
     image = VersatileImageField(upload_to='contact_methods', blank=True, null=True)
+    type = models.CharField(
+        choices=[
+            ('telefono', "Telefono"),
+            ('perfil', 'Perfil'),
+            ('email', 'Email'),
+            ('red_social', 'Red Social')
+        ],
+        max_length=20, 
+        default='telefono'
+    )
 
     def __str__(self):
         return self.name
@@ -33,7 +43,9 @@ class UserInformation(models.Model):
     location = models.PointField(geography=True, default=Point(0.0, 0.0))
     # https://raphael-leger.medium.com/django-handle-latitude-and-longitude-54a4bb2f6e3b
     city = models.CharField(max_length=50, blank=True, null=True)
-    country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True)
+    state = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+    # country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True)
     # contacts: Contact[]
     @property
     def longitude(self):
@@ -82,7 +94,7 @@ class UserInformation(models.Model):
         return dd
 
 class Contact(models.Model):
-    description = models.CharField(max_length=200)
+    contact = models.CharField(max_length=200)
     contact_method = models.ForeignKey(ContactMethod, on_delete=models.CASCADE)
     user = models.ForeignKey(UserInformation, related_name='contacts' ,on_delete=models.CASCADE)
 
