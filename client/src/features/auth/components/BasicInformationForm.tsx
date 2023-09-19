@@ -1,7 +1,7 @@
-import { Field, FieldArray, Formik } from 'formik';
+import { Field, FieldArray, Formik, FormikErrors } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Spinner, user } from "@nextui-org/react";
-import { UserInformation } from '../../../types/user';
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Select, SelectItem, Avatar, Spinner } from "@nextui-org/react";
+import { ContactMethodCreate, UserInformation } from '../../../types/user';
 import { MdAdd, MdDelete, MdPlace } from 'react-icons/md';
 import { HiOutlineExternalLink } from 'react-icons/hi';
 
@@ -182,9 +182,9 @@ export const BasicInformationForm = () => {
                                       : []
                                   }
                                   onClose={() => formik.setFieldTouched(`contacts.${index}.contact_method`, true)}
-                                  color={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts?.[index]?.contact_method ? "danger" : "")}
-                                  errorMessage={formik.touched.contacts?.[index]?.contact_method && formik.errors.contacts?.[index]?.contact_method }
-                                  validationState={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts?.[index]?.contact_method)}
+                                  color={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts as FormikErrors<ContactMethodCreate>[])?.[index]?.contact_method ? "danger" : ""}
+                                  errorMessage={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts as FormikErrors<ContactMethodCreate>[])?.[index]?.contact_method }
+                                  validationState={formik.touched.contacts?.[index]?.contact_method && (formik.errors.contacts as FormikErrors<ContactMethodCreate>[])?.[index]?.contact_method}
                                   classNames={{
                                     popover: 'min-w-max'
                                   }}
@@ -224,9 +224,9 @@ export const BasicInformationForm = () => {
                                       m => m.id === formik.values.contacts[index].contact_method
                                     )?.type ?? 'Contacto'
                                   }
-                                  color={formik.touched.contacts?.[index]?.contact && formik.errors.contacts?.[index]?.contact ? "danger" : ""}
-                                  errorMessage={formik.touched.contacts?.[index]?.contact && formik.errors.contacts?.[index]?.contact}
-                                  validationState={formik.touched.contacts?.[index]?.contact && formik.errors.contacts?.[index]?.contact}
+                                  color={formik.touched.contacts?.[index]?.contact && (formik.errors.contacts as FormikErrors<ContactMethodCreate>[])?.[index]?.contact ? "danger" : ""}
+                                  errorMessage={formik.touched.contacts?.[index]?.contact && (formik.errors.contacts as FormikErrors<ContactMethodCreate>[])?.[index]?.contact}
+                                  validationState={formik.touched.contacts?.[index]?.contact && (formik.errors.contacts as FormikErrors<ContactMethodCreate>[])?.[index]?.contact}
                                 />
                                 <Button 
                                   isIconOnly 

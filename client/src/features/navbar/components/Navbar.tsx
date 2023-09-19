@@ -14,12 +14,16 @@ import { useContext } from "react";
 import { AuthContext } from "../../../context/auth";
 import { UserOptions } from "./UserOptions";
 import { SearchBar } from "./SearchBar";
+import { useUserInfo } from "../hooks/useUserInfo";
+import { ImageSizes } from "../../../types/category";
 
 export const Navbar = () => {
 
   const location = useLocation()
 
   const auth = useContext(AuthContext);
+
+  const { data } = useUserInfo()
 
   return (
     <NavBarNUI 
@@ -63,11 +67,10 @@ export const Navbar = () => {
             <Popover placement="bottom">
               <PopoverTrigger>
                 <Avatar
-                  name={auth.username}
+                  src={( data?.avatar as ImageSizes)?.medium_square_crop}
                   className="transition-transform cursor-pointer"
                   size='sm'
                   isBordered
-                  color='secondary'
                 />
               </PopoverTrigger>
               <PopoverContent className="p-1 w-56">

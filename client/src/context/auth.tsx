@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }: any) => {
 
   const localToken = localStorage.getItem('token');
 
-  const [username, setUsername] = useState<string>();
   const [signed, setSigned] = useState<boolean>( !!localToken );
   const [token, setToken] = useState<string | undefined>(localToken);
 
@@ -21,7 +20,6 @@ export const AuthProvider = ({ children }: any) => {
   const handleLogout = () => {
     setToken(null);
     localStorage.removeItem('token');
-    setUsername(null);
     setSigned(false);
   }
 
@@ -30,7 +28,6 @@ export const AuthProvider = ({ children }: any) => {
     <AuthContext.Provider
       value={{ 
         signed,
-        username,
         token,
         handleLogin,
         handleLogout

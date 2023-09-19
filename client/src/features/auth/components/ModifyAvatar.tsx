@@ -1,4 +1,4 @@
-import { Avatar, Image } from "@nextui-org/react"
+import { Avatar } from "@nextui-org/react"
 import { memo, useMemo, useRef, useState } from "react"
 import { MdOutlineAddPhotoAlternate } from "react-icons/md"
 import { compressImage } from "../../../utils/compressImage"
