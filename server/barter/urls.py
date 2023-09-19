@@ -50,6 +50,7 @@ urlpatterns = [
     # path('trade/api/', include(router.urls)),
     # path("trade/", include("trade.urls")),
     path('api/v1/', include('trade.api.urls')),
+    path('', include('trade.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/api-auth/', include('rest_framework.urls')),
     # JWT

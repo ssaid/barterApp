@@ -90,7 +90,7 @@ class Dev(Configuration):
     }
 
     ROOT_URLCONF = 'barter.urls'
-
+    LOGIN_URL = 'login'
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -126,6 +126,8 @@ class Dev(Configuration):
             'PORT': os.environ.get('POSTGRES_PORT', 5432),
         }
     }
+
+    CLIENT_URL = values.Value('http://localhost:3000')
 
 
 # Password validation
