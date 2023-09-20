@@ -2,7 +2,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider } from "@nextui-org/react";
 import { UserBase } from '../../../types/user';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom';
@@ -32,13 +32,10 @@ export const LoginForm = () => {
     setPswVisible(visible => !visible)
   }
 
-  const handleSubmit = (values: UserBase) => {
-    login.mutate(values)
-  }
+  const handleSubmit = async(values: UserBase) => {
+    const { status } = await login.mutateAsync(values)
 
-  useEffect(() => {
-
-    if (login.isSuccess){
+    if (status === 200){
       handleLogin({ token: login.data.data.access })
       localStorage.setItem('token', login.data.data.access)
       localStorage.setItem('refresh_token', login.data.data.refresh)
@@ -50,10 +47,9 @@ export const LoginForm = () => {
         },
       )
       navigate('/')
-
     }
 
-  }, [login.isSuccess])
+  }
 
   return (
     <Card className="max-w-lg w-full py-5">
@@ -106,16 +102,24 @@ export const LoginForm = () => {
               </CardBody>
               <CardFooter className="flex flex-col" >
                 <div className='text-end w-full px-3'>
-                  <Button variant="solid" color="primary" type="submit" isLoading={login.isLoading}>
+                  <Button 
+                    variant="solid" 
+                    color="primary" 
+                    type='submit'
+                    isLoading={login.isLoading}
+                  >
                     Ingresar
                   </Button>
                 </div>
                 <Divider className='my-5' />
               <p>Todavia no tenes cuenta? <Link to='/register' className='text-primary'>Registrate</Link></p>
               </CardFooter>
-              <p className={`text-white bg-danger text-center transition duration-500 py-1 -mb-5 mt-2 ${login.isError ? '' : 'translate-y-8'} `} >
-                {parseError(login.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
-              </p>
+
+              <div className='relative bottom-0 sm:h-5 h-12 -mb-5 mt-4'>
+                <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${login.isError ? '' : 'translate-y-20 '} `} >
+                  {parseError(login.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
+                </p>
+              </div>
             </Form>
         }
       </Formik>

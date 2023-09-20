@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Button, Divider, Checkbox, Link} from "@nextui-org/react";
 import { UserCreate } from '../../../types/user';
 import { useContext, useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -10,16 +10,18 @@ import { parseError } from '../../../utils/parseError';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/auth';
 
-const initialValues: UserCreate = {
+const initialValues: UserCreate & { terms: boolean } = {
   username: '',
   email: '',
   password: '',
+  terms: false
 }
 
 const validationSchema = Yup.object({
   username: Yup.string().required('Campo requerido'),
   email: Yup.string().email('Email invalido').required('Campo requerido'),
   password: Yup.string().required('Campo requerido'),
+  tems: Yup.boolean().oneOf([true], 'Debes aceptar los terminos y condiciones')
 })
 
 
@@ -35,7 +37,7 @@ export const RegisterForm = () => {
     setPswVisible(visible => !visible)
   }
 
-  const handleSubmit = (values: UserCreate) => {
+  const handleSubmit = (values: UserCreate & { terms: boolean }) => {
     register.mutate(values)
 
   }
@@ -114,15 +116,40 @@ export const RegisterForm = () => {
                   }
                   type={pswVisible ? "text" : "password"}
                 />
+
+                <span className='flex items-center gap-1'>
+                  <Field 
+                    as={Checkbox}
+                    name="terms"
+                  />
+                  <span className='flex flex-wrap gap-1'>
+                    Acepto los
+                    <Link
+                      showAnchorIcon
+                      isExternal
+                      href="https://www.google.com"
+                    >
+                      terminos y condiciones
+                    </Link> de IntercambioYA.
+                  </span>
+                </span>
               </CardBody>
               <CardFooter className="justify-end gap-4" >
-                <Button variant="solid" color="primary" type="submit" isLoading={register.isLoading || login.isLoading}>
+                <Button 
+                  variant="solid" 
+                  color="primary" 
+                  type="submit" 
+                  isLoading={register.isLoading || login.isLoading}
+                  isDisabled={!formik.values.terms}
+                >
                   Registrarse
                 </Button>
               </CardFooter>
-              <p className={`text-white bg-danger text-center transition duration-500 py-1 -mb-5 mt-2 ${register.isError ? '' : 'translate-y-8'} `} >
-                {parseError(register.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
-              </p>
+                <div className='relative bottom-0 sm:h-5 h-12 -mb-5 mt-4'>
+                  <p className={`text-white absolute w-full bottom-0 bg-danger text-center transition duration-500 py-1 ${register.isError ? '' : 'translate-y-20 '} `} >
+                  {parseError(register.error) || "Ha ocurrido un error. Vuelve a intentar mas tarde."}
+                  </p>
+                </div>
             </Form>
         }
       </Formik>
