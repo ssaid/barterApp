@@ -25,7 +25,6 @@ class Dev(Configuration):
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-(c-1scd%j+t1x9o))z&j_%oe4xdtd)mesz+i%ybw%0ten@%6gs'
     SECRET_KEY = values.SecretValue()
-    print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
@@ -34,6 +33,10 @@ class Dev(Configuration):
     ALLOWED_HOSTS = values.ListValue([], separator=';')
     CSRF_TRUSTED_ORIGINS = values.ListValue([], separator=';')
     CORS_ALLOWED_ORIGINS = values.ListValue([], separator=';')
+
+    VERIFICATION_SUCCESS_TEMPLATE = None
+    LINK_EXPIRED_TEMPLATE = 'verify_email/link_expired.html'
+    VERIFICATION_FAILED_TEMPLATE = 'verify_email/email_verification_failed.html'
 
 # Application definition
 
@@ -94,7 +97,7 @@ class Dev(Configuration):
     TEMPLATES = [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [],
+            'DIRS': [BASE_DIR / "templates"],
             'APP_DIRS': True,
             'OPTIONS': {
                 'context_processors': [
@@ -221,7 +224,6 @@ class Dev(Configuration):
 
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    print('MEDIA_ROOT: ', MEDIA_ROOT)
 
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SWAGGER_SETTINGS = {
