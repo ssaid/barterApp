@@ -23,7 +23,7 @@ export const Navbar = () => {
 
   const auth = useContext(AuthContext);
 
-  const { data } = useUserInfo()
+  const { data } = useUserInfo({shouldFetch: auth.signed})
 
   return (
     <NavBarNUI 
