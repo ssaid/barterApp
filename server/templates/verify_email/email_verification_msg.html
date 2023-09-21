@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    
+    <title>Verificación de cuenta</title>
+
+    <style>
+        .format-font {
+            font-family: 'Montserrat', sans-serif; 
+        }
+        .my-container {
+            margin: 10px;
+            padding: 10px;
+            padding-top: 0px;
+            justify-content: center;
+            border-radius: 5px;
+            border: 1px solid rgb(204, 203, 203);
+        }
+
+        .my-button {
+            padding: 10px;
+            padding-left: 35px;
+            padding-right: 35px;
+            background-color: rgb(110, 3, 211);
+            color: white;
+            border-radius: 25px;
+            transition-duration: 500ms;
+            text-decoration: none;
+            
+        }
+        .my-button:hover {
+            color: rgb(110, 3, 211);
+            background-color: white;
+            border-radius: 0px;
+            border: 1px solid rgb(110, 3, 211);
+            transition-duration: 200ms;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="my-container">
+
+        <div style="background-color: rgb(110, 3, 211); border-radius: 15px;">
+            <h1 class="format-font" style="text-align: center; padding: 2px; color:white;">
+                Verificación de cuenta
+            </h1>
+        </div>
+
+        <h2 class="format-font" style="text-align: center;">Verificación de email</h2> <hr style="background-color:  rgb(110, 3, 211); width:100px">
+
+        <div class="format-font" style="margin-top: 20px; line-height: 1.5;">
+            <p style="text-align: center; font-weight: bold;">Hola!</p>
+            Recibiste este correo por que te diste de alta en nuestro sitio: <b>intercambioya.com</b><br> 
+            Vamos a verificar tu cuenta antes de que puedas operar en nuestra plataforma.
+        </div>
+
+        <p class="format-font" style="text-align: center; margin-top: 50px;">
+            Por favor verifica tu correo:
+            <hr style="background-color:  rgb(110, 3, 211); width:50px">
+            <div class="format-font" style="text-align: center; margin-top: 30px;" >
+                <a href="{{link}}" class="my-button" >Verificar</a>
+            </div>
+            
+        </p>
+    
+        <p class="format-font" style="margin-top: 50px;">
+           <b> Luego de presionar el botón ya podrás iniciar sesión!</b>
+        </p>
+    
+        <p class="format-font" style="line-height: 1.5;">
+        <b>Gracias por ser parte!<br> Por favor no respondas este email. <br> Equipo de IntercambioYa🚀</b>
+        </p>
+        
+    </div>
+   
+</body>
+</html>
