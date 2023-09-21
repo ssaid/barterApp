@@ -6,8 +6,8 @@ export const compressImage =
   new Promise((resolve, reject) => {
     new Compressor(file, {
       quality,
-      maxWidth: 600,
-      maxHeight: 600,
+      maxWidth: 900,
+      maxHeight: 900,
       mimeType: 'image/jpeg',
       success: compressedImage => {
         const defaultFileName = `ityaimg_${Date.now()}.jpg`;

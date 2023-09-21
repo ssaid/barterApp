@@ -13,6 +13,7 @@ export type Post = {
 }
 
 export type Image = {
+  id: number;
   image: ImageSizes
 }
 

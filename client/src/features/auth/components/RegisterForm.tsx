@@ -127,7 +127,7 @@ export const RegisterForm = () => {
                     <Link
                       showAnchorIcon
                       isExternal
-                      href="https://www.google.com"
+                      href="https://www.youtube.com/watch?v=DLzxrzFCyOs"
                     >
                       terminos y condiciones
                     </Link> de IntercambioYA.

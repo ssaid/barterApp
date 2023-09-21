@@ -94,9 +94,9 @@ class ImageSerializer(serializers.ModelSerializer):
         sizes=[
             ('full_size', 'url'),
             ('thumbnail', 'thumbnail__350x350'),
-            ('large_square_crop', 'crop__350x350'),
-            ('medium_square_crop', 'crop__125x125'),
-            ('small_square_crop', 'crop__100x100'),
+            ('large_square_crop', 'crop__900x900'),
+            ('medium_square_crop', 'crop__350x350'),
+            ('small_square_crop', 'crop__250x250'),
         ]
     )
     post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
@@ -145,8 +145,8 @@ class AvatarSerializer(serializers.ModelSerializer):
         sizes=[
             ('full_size', 'url'),
             ('thumbnail', 'thumbnail__350x350'),
-            ('large_square_crop', 'crop__350x350'),
-            ('medium_square_crop', 'crop__125x125'),
+            ('large_square_crop', 'crop__500x500'),
+            ('medium_square_crop', 'crop__250x250'),
             ('small_square_crop', 'crop__100x100'),
         ]
     )

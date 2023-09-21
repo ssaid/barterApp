@@ -34,8 +34,8 @@ export const usePosts = () => {
       values.images.forEach(image => {
         new Compressor(image, {
           quality: 0.8,
-          maxWidth: 600,
-          maxHeight: 600,
+          maxWidth: 900,
+          maxHeight: 900,
           mimeType: 'image/jpeg',
           success: compressedImage => {
             const fileName = `ityaimg_${Date.now()}.jpg`;
