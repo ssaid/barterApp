@@ -143,6 +143,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    slug = models.SlugField(unique=True)
     title = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
     categories = models.ManyToManyField(Category, related_name='posts')
@@ -155,6 +156,10 @@ class Post(models.Model):
 
     class Meta: 
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
 
 
 class Like(models.Model):

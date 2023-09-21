@@ -5,6 +5,7 @@ import { MutableRefObject, memo, useEffect, useRef, useState } from "react";
 import noImage from '../../../assets/image_not_available.png'
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { usePostCard } from "../hooks/usePostCard";
+import { useNavigate } from "react-router-dom";
 
 
 type Props = {
@@ -19,6 +20,7 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
   const [ likes, setLikes ] = useState(post.like_count)
 
   const didFetch = useRef<boolean>(false)
+  const navigate = useNavigate()
 
   const { like, unlike } = usePostCard()
 
@@ -44,8 +46,14 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
 
 
   return (
-    <Card className="py-4 max-w-xs relative w-full" ref={ref as MutableRefObject<HTMLInputElement>}>
-      <CardHeader className="py-2 px-4 flex-col items-start gap-1">
+    <Card 
+      className="py-4 max-w-xs relative w-full hover:cursor-pointer" 
+      ref={ref as MutableRefObject<HTMLInputElement>}
+    >
+      <CardHeader 
+        className="py-2 px-4 flex-col items-start gap-1"
+        onClick={() => navigate(`/posts/${post.slug}`)}
+      >
         <h4 className="font-bold text-large">{ post.title }</h4>
         <p className="text-tiny uppercase font-bold truncate max-w-[100%]">{ post.description }</p>
         <Button 
@@ -64,6 +72,7 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
       </CardHeader>
       <CardBody 
         className="overflow-visible p-4"
+        onClick={() => navigate(`/posts/${post.slug}`)}
       >
         <Image
           shadow="sm"

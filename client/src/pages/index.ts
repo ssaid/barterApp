@@ -7,5 +7,6 @@ export { Fallback } from './Fallback'
 export { MyPosts } from './MyPosts'
 export { CreatePost } from './CreatePost'
 export { Logout } from './Logout'
+export { Detail } from './Detail'
 
 

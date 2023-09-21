@@ -14,8 +14,10 @@ services:
     image: postgis/postgis:15-3.4
     volumes:
       - postgis_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=truequeardb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
   server:
@@ -28,7 +30,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=postgres
+      - POSTGRES_NAME=truequeardb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - DJANGO_CONFIGURATION=Dev

@@ -6,7 +6,8 @@ import { PublicRoutes } from "../components/PublicRoutes";
 import { App } from "../App";
 
 import {
-    Favourites,
+  Favourites,
+  Detail,
   Home,
   Login,
   Register,
@@ -15,7 +16,6 @@ import {
   Logout,
   MyPosts,
   Fallback,
-
 } from '../pages'
 
 
@@ -25,6 +25,7 @@ export const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/", element: <Home /> },
+      { path: "/posts/:slug", element: <Detail /> },
       { 
         path: "/", 
         element: <PrivateRoutes />,

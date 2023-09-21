@@ -8,6 +8,7 @@ import django_filters
 from django_filters import rest_framework as filters
 from django.db import models
 from verify_email.email_handler import _VerifyEmail
+from django.utils.text import slugify 
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -148,6 +149,7 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
     pagination_class = pagination.LimitOffsetPagination
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_class = PostFilter
+    lookup_field = 'slug'
 
     def get_queryset(self):
         return Post.objects.prefetch_related('images', 'categories').all()

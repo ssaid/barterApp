@@ -1,6 +1,7 @@
 
 export type Post = {
   id?: number;
+  slug?: string;
   title: string;
   description: string;
   categories: Category[] | number[];
