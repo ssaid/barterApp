@@ -149,7 +149,6 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
     pagination_class = pagination.LimitOffsetPagination
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_class = PostFilter
-    lookup_field = 'slug'
 
     def get_queryset(self):
         return Post.objects.prefetch_related('images', 'categories').all()
@@ -189,9 +188,6 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
         return Response({'likes': Like.objects.filter(post=post).count()}, status=200)
 
     def retrieve(self, request, *args, **kwargs):
-
-        res = super().retrieve(request, *args, **kwargs)
-
         post = self.get_object()
         post.interactions += 1
         post.save()
@@ -200,9 +196,21 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
         if request.user.is_authenticated:
             contacts = ContactSerializer(post.user.user_information.contacts.all(), many=True)
 
+        res = super().retrieve(request, *args, **kwargs)
         res.data['contacts'] = contacts.data if contacts else None
 
         return res
+
+    def get_object(self):
+        if self.action == 'retrieve':
+            lookup_field = 'slug'
+        else:
+            lookup_field = 'id'
+
+        kwargs = {
+            lookup_field: self.kwargs.get('pk')
+        }
+        return self.get_queryset().get(**kwargs)
 
 
 class FavouritesView(generics.ListAPIView):

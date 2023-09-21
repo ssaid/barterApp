@@ -33,16 +33,17 @@ export const LoginForm = () => {
   }
 
   const handleSubmit = async(values: UserBase) => {
-    const { status } = await login.mutateAsync(values)
+    const { status, data } = await login.mutateAsync(values)
+    console.log(status)
 
     if (status === 200){
-      handleLogin({ token: login.data.data.access })
-      localStorage.setItem('token', login.data.data.access)
-      localStorage.setItem('refresh_token', login.data.data.refresh)
+      handleLogin({ token: data.access })
+      localStorage.setItem('token', data.access)
+      localStorage.setItem('refresh_token', data.refresh)
 
       api.interceptors.request.use(
         config => {
-          config.headers['Authorization'] = `Bearer ${login.data.data.access}`
+          config.headers['Authorization'] = `Bearer ${data.access}`
           return config
         },
       )

@@ -54,7 +54,7 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
         className="py-2 px-4 flex-col items-start gap-1"
         onClick={() => navigate(`/posts/${post.slug}`)}
       >
-        <h4 className="font-bold text-large">{ post.title }</h4>
+        <h4 className="font-bold text-large truncate max-w-[calc(100%-50px)]">{ post.title }</h4>
         <p className="text-tiny uppercase font-bold truncate max-w-[100%]">{ post.description }</p>
         <Button 
           variant="light"
@@ -63,7 +63,7 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
           onClick={toggleLike}
           endContent={
             <AiFillHeart 
-              className={ `text-xl ${ liked ? 'text-danger' : '' }` }
+              className={ `text-xl ${ liked ? 'text-danger' : 'dark:text-gray-300 text-gray-400' }` }
             />
           }
         >
