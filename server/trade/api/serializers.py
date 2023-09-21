@@ -154,3 +154,11 @@ class AvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInformation
         fields = ['avatar']
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    contact_method = ContactMethodSerializer(read_only=True)
+
+    class Meta:
+        model = Contact
+        exclude = ['user']

@@ -39,7 +39,7 @@ class ContactMethod(models.Model):
 
 class UserInformation(models.Model):
     avatar = VersatileImageField(upload_to='avatars/', blank=True, null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_information')
     location = models.PointField(geography=True, default=Point(0.0, 0.0))
     # https://raphael-leger.medium.com/django-handle-latitude-and-longitude-54a4bb2f6e3b
     city = models.CharField(max_length=50, blank=True, null=True)

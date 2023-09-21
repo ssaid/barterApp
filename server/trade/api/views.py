@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions, generics, status, pagination
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
-from .serializers import AvatarSerializer, UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
+from .serializers import AvatarSerializer, ContactSerializer, UserSerializer, UserInformationSerializer, PostSerializer, ImageSerializer, CountrySerializer, ContactMethodSerializer, RegionSerializer, LocationSerializer, CategorySerializer, PostSerializerCustom
 import django_filters.rest_framework
 import django_filters
 from django_filters import rest_framework as filters
@@ -13,7 +13,7 @@ from django.utils.text import slugify
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-from trade.models import UserInformation, Post, Country, ContactMethod, Category, Like
+from trade.models import Contact, UserInformation, Post, Country, ContactMethod, Category, Like
 from cities.models import Region
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
@@ -187,6 +187,22 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
         # Remove like
         [l.delete() for l in like]
         return Response({'likes': Like.objects.filter(post=post).count()}, status=200)
+
+    def retrieve(self, request, *args, **kwargs):
+
+        res = super().retrieve(request, *args, **kwargs)
+
+        post = self.get_object()
+        post.interactions += 1
+        post.save()
+
+        contacts = None
+        if request.user.is_authenticated:
+            contacts = ContactSerializer(post.user.user_information.contacts.all(), many=True)
+
+        res.data['contacts'] = contacts.data if contacts else None
+
+        return res
 
 
 class FavouritesView(generics.ListAPIView):

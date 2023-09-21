@@ -3,6 +3,7 @@ import { Carousel } from "./Carousel"
 import { usePost } from "../hooks/usePost"
 import { LoadingWithBackdrop } from "../../../components/LoadingWithBackdrop"
 import { Image } from "../../../types/post"
+import { Button, Card, CardBody, Link } from "@nextui-org/react"
 
 
 type Props = {
@@ -25,13 +26,51 @@ export const Post: FC<Props> = ({ slug }) => {
             <h5 className="text-lg">Descripcion</h5>
             <p className="p-2">{ data.description }</p>
           </section>
-          <section className="p-2">
-            <h5 className="text-lg">Metodos de contacto</h5>
-            <ul className="decoration-none p-2">
-              <li>Telefono: 30920123123</li>
-              <li>Correo: example@email.com</li>
-            </ul>
-          </section>
+          {
+            !!data.contacts?.length 
+              ?
+                (
+                <section className="p-2">
+                  <h5 className="text-lg">Metodos de contacto</h5>
+                  <div className="flex flex-col gap-2 p-2">
+                    {
+                      data.contacts?.map(contact => 
+                        <Button 
+                          fullWidth
+                          variant="ghost"
+                          startContent={
+                            <img 
+                              className="h-unit-6"
+                              src={'http://localhost:8000'+contact.contact_method.image} 
+                            />
+                          }
+                        >
+                          { contact.contact }
+                        </Button>
+                      )
+                    }
+                  </div>
+                </section>
+              )
+              :
+              (
+                <Card className="bg-warning/20 w-full">
+                  <CardBody className="text-warning">
+                    <p className="flex gap-1 flex-wrap mx-auto">
+                      Para ver los metodos de contacto debes 
+                      <Link 
+                        href="/login" 
+                        color="warning" 
+                        showAnchorIcon
+                        className="font-bold"
+                      >
+                        Iniciar sesion
+                      </Link>
+                    </p>
+                  </CardBody>
+                </Card>
+              )
+          }
         </aside>
       </div>
     </div>

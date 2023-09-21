@@ -1,3 +1,4 @@
+import { ContactMethod } from "./user";
 
 export type Post = {
   id?: number;
@@ -10,6 +11,7 @@ export type Post = {
   is_liked: boolean;
   state: 'draft' | 'active' | 'done';
   images: File[] | Image[];
+  contacts?: Contact[];
 }
 
 export type Image = {
@@ -39,4 +41,10 @@ export type PaginatedPostResponse =  {
     next:     string | null;
     previous: string | null;
     results:  Post[];
+}
+
+export type Contact = {
+  id: number
+  contact_method: ContactMethod,
+  contact: string
 }
