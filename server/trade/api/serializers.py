@@ -32,7 +32,7 @@ class RegionSerializer(serializers.ModelSerializer):
         model = Region
         fields = ["id","name"]
 
-class ContactMethodSerializer(serializers.ModelSerializer):   
+class ContactMethodSerializer(serializers.ModelSerializer):
 
     type = serializers.CharField(source='get_type_display')
 
@@ -157,7 +157,12 @@ class AvatarSerializer(serializers.ModelSerializer):
 
 
 class ContactSerializer(serializers.ModelSerializer):
-    contact_method = ContactMethodSerializer(read_only=True)
+    url = serializers.SerializerMethodField()
+
+    def get_url(self, obj):
+        base_url = obj.contact_method.base_url
+        the_url = base_url.format(uuid=obj.contact)
+        return the_url
 
     class Meta:
         model = Contact

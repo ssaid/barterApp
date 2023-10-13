@@ -29,9 +29,10 @@ class ContactMethod(models.Model):
             ('email', 'Email'),
             ('red_social', 'Red Social')
         ],
-        max_length=20, 
+        max_length=20,
         default='telefono'
     )
+    base_url = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -154,7 +155,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta: 
+    class Meta:
         ordering = ['-created_at']
 
     def save(self, *args, **kwargs):
