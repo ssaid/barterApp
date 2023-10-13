@@ -8,7 +8,7 @@ import django_filters
 from django_filters import rest_framework as filters
 from django.db import models
 from verify_email.email_handler import _VerifyEmail
-from django.utils.text import slugify 
+from django.utils.text import slugify
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -85,7 +85,7 @@ class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
-    
+
     def perform_create(self, serializer):
         instance = serializer.save()
         UserInformation.objects.create(user=instance)
@@ -143,15 +143,12 @@ class PostFilter(django_filters.FilterSet):
         return queryset.filter(models.Q(title__icontains=value) | models.Q(description__icontains=value))
 
 class AllPostView(viewsets.ReadOnlyModelViewSet):
-    queryset = Post.objects.prefetch_related('images', 'categories').all()
+    queryset = Post.objects.prefetch_related('images', 'categories').filter(state='active')
     serializer_class = PostSerializer
     permission_classes = [ permissions.AllowAny ]
     pagination_class = pagination.LimitOffsetPagination
     # filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filterset_class = PostFilter
-
-    def get_queryset(self):
-        return Post.objects.prefetch_related('images', 'categories').all()
 
     def get_permissions(self):
         # If accessing the like or unlike actions, require authentication
@@ -164,12 +161,12 @@ class AllPostView(viewsets.ReadOnlyModelViewSet):
     @action(detail=True, methods=['POST'])
     def like(self, request, pk=None):
         post = self.get_object()
-        
+
         # Check if user already liked the post
         like = Like.objects.filter(post=post, user=request.user)
         if like.exists():
             return Response({'likes': 'You have already liked this post.'}, status=400)
-        
+
         # Create like object
         Like.objects.create(post=post, user=request.user)
         return Response({'likes': Like.objects.filter(post=post).count()}, status=200)
@@ -232,5 +229,5 @@ class UploadAvatarView(generics.UpdateAPIView):
 
     def get_object(self):
         return UserInformation.objects.get(user=self.request.user)
-    
+
 
