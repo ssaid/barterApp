@@ -7,7 +7,7 @@ import {
   Avatar,
   Popover,
   PopoverTrigger,
-  PopoverContent
+  PopoverContent,
 } from "@nextui-org/react";
 import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
@@ -16,6 +16,7 @@ import { UserOptions } from "./UserOptions";
 import { SearchBar } from "./SearchBar";
 import { useUserInfo } from "../hooks/useUserInfo";
 import { ImageSizes } from "../../../types/category";
+import { Logo } from "./Logo"
 
 export const Navbar = () => {
 
@@ -34,7 +35,15 @@ export const Navbar = () => {
       }}
     >
       <NavbarBrand>
-        <Link to='/' className="font-bold text-inherit">LOGO</Link>
+        <Link to='/' className="font-bold text-inherit">
+          <Logo 
+            //className="stroke-foreground scale-x-50 scale-y-50"
+            //viewBox="0 0 1000 1000"
+            //width="1000"
+            //height="1000"
+          />
+          <h1 className="hidden">IntercambiosYa</h1>
+        </Link>
       </NavbarBrand>
       <NavbarContent justify="center">
         { location.pathname === '/' && <SearchBar /> }

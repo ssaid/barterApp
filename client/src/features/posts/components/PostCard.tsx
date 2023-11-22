@@ -77,11 +77,11 @@ export const PostCard = memo(({ post, fetchNextPage, fetchesOnVisible }: Props )
         <Image
           shadow="sm"
           radius="lg"
-          height="350px"
-          width="350px"
+          height="300px"
+          width="300px"
           alt={post.title}
           className="object-cover rounded-xl"
-          src={(post.images as ImageType[])[0]?.image?.large_square_crop ?? noImage}
+          src={(post.images as ImageType[])[0]?.image?.medium_square_crop ?? noImage}
         />
       </CardBody>
     </Card>

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { RouteObject, createBrowserRouter } from "react-router-dom";
 
 import { PrivateRoutes } from "../components/PrivateRoutes";
 import { PublicRoutes } from "../components/PublicRoutes";
@@ -17,9 +17,24 @@ import {
   MyPosts,
   Fallback,
 } from '../pages'
+import { Suspense } from "react";
 
 
-export const router = createBrowserRouter([
+const wrapWithSuspense = (element: JSX.Element) => (
+  <Suspense fallback={<Fallback />}>
+    {element}
+  </Suspense>
+);
+
+const wrapElementsWithSuspense = (routes: any[]): RouteObject[] => {
+  return routes.map((route) => ({
+    ...route,
+    element: wrapWithSuspense(route.element),
+    children: route.children ? wrapElementsWithSuspense(route.children) : null,
+  }));
+}
+
+const config = wrapElementsWithSuspense([
   {
     path: "/",
     element: <App />,
@@ -49,4 +64,6 @@ export const router = createBrowserRouter([
     ],
     errorElement: <Fallback />,
   },
-]);
+])
+
+export const router = createBrowserRouter(config);

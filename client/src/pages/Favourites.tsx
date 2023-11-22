@@ -6,3 +6,5 @@ export const Favourites = () =>
     <FavouriteList />
   </div>
 
+
+export default Favourites

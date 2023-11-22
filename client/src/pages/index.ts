@@ -1,12 +1,13 @@
-export { Home } from './Home'
-export { Login } from './Login'
-export { Register } from './Register'
-export { Favourites } from './Favourites'
-export { BasicInformation } from './BasicInformation'
-export { Fallback } from './Fallback'
-export { MyPosts } from './MyPosts'
-export { CreatePost } from './CreatePost'
-export { Logout } from './Logout'
-export { Detail } from './Detail'
+import { lazy } from 'react'
 
+export const Home = lazy(() => import('./Home'))
+export const Login = lazy(() => import('./Login'))
+export const Register = lazy(() => import('./Register'))
+export const Favourites = lazy(() => import('./Favourites'))
+export const BasicInformation = lazy(() => import('./BasicInformation'))
+export const Fallback = lazy(() => import('./Fallback'))
+export const MyPosts = lazy(() => import('./MyPosts'))
+export const CreatePost = lazy(() => import('./CreatePost'))
+export const Logout = lazy(() => import('./Logout'))
+export const Detail = lazy(() => import('./Detail'))
 

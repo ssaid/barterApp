@@ -33,7 +33,7 @@ export const CategoryCard = ({ category }: Props) => {
       className="h-[125px] w-[125px] sm:h-[150px] sm:w-[150px] relative shrink-0"
     >
       <Image
-        alt={category.name}
+        alt={category.name + "-image"}
         src={category.image.medium_square_crop}
         removeWrapper
         className="z-0 w-full h-full object-cover"

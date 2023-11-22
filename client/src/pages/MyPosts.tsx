@@ -9,3 +9,5 @@ export const MyPosts = () => {
     </div>
   )
 }
+
+export default MyPosts

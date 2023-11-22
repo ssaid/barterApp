@@ -19,3 +19,5 @@ export const Fallback = () => (
   </div>
 
 )
+
+export default Fallback

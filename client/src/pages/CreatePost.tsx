@@ -11,3 +11,5 @@ export const CreatePost = () => {
     </main>
   )
 }
+
+export default CreatePost
