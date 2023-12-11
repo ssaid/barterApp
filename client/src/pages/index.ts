@@ -10,4 +10,5 @@ export const MyPosts = lazy(() => import('./MyPosts'))
 export const CreatePost = lazy(() => import('./CreatePost'))
 export const Logout = lazy(() => import('./Logout'))
 export const Detail = lazy(() => import('./Detail'))
+export const EditPost = lazy(() => import('./EditPost'))
 

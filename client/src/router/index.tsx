@@ -16,6 +16,7 @@ import {
   Logout,
   MyPosts,
   Fallback,
+  EditPost,
 } from '../pages'
 import { Suspense } from "react";
 
@@ -49,6 +50,7 @@ const config = wrapElementsWithSuspense([
           { path: "user/new-post", element: <CreatePost /> },
           { path: "user/my-posts", element: <MyPosts /> },
           { path: "user/favourites", element: <Favourites /> },
+          { path: "user/edit-post/:id", element: <EditPost /> },
         ]
       },
       {

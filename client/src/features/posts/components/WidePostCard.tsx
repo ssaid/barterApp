@@ -9,6 +9,7 @@ import { HiPencilSquare } from "react-icons/hi2";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useMutation } from "@tanstack/react-query";
 import { patchPost } from "../services";
+import { useNavigate } from "react-router-dom";
 
 type WidePostCardProps = {
   post: Post
@@ -16,6 +17,8 @@ type WidePostCardProps = {
 
 export const WidePostCard = ({ post }: WidePostCardProps) => {
   
+  const navigate = useNavigate()
+
   const isMobile = useMediaQuery("only screen and (max-width : 640px)")
 
   const [published, setPublished] = useState(post.state);
@@ -64,9 +67,7 @@ export const WidePostCard = ({ post }: WidePostCardProps) => {
                   isIconOnly
                   variant="faded"
                   color="primary"
-                  // onPress={() =>
-                  //   setPublished((prev) => (prev === 'active' ? 'done' : 'active'))
-                  // }
+                  onClick={() => navigate('/user/edit-post/' + post.id)}
                 >
                   <HiPencilSquare className="text-lg" />
                 </Button>
